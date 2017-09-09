@@ -46,6 +46,9 @@ public final class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
+    private static final String TOP_RATED_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=<API>";
+    private static final String MOST_POPULAR_URL = "http://api.themoviedb.org/3/movie/popular?api_key=<API>";
+
     private static final String DYNAMIC_WEATHER_URL =
             "https://andfun-weather.udacity.com/weather";
 

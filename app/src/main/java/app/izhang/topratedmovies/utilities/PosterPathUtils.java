@@ -22,6 +22,6 @@ public class PosterPathUtils {
 
     public static String buildPosterURL(String path, String size){
         // Defaulting size to W154
-        return (BASE_URL + SIZE_W154 + "/" + path);
+        return (BASE_URL + SIZE_W500 + "/" + path);
     }
 }

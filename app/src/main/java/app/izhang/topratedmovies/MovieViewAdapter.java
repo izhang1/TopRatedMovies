@@ -18,11 +18,20 @@ import app.izhang.topratedmovies.utilities.PosterPathUtils;
  * Created by ivanzhang on 9/8/17.
  */
 
-public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.MovieViewHolder> {
+public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.MovieViewHolder>{
 
     private ArrayList<Movie> movieData;
     private Context context;
 
+    final private MovieViewAdapterOnClickHander mClickHandler;
+
+    public MovieViewAdapter(MovieViewAdapterOnClickHander movieViewAdapterOnClickHander){
+        this.mClickHandler = movieViewAdapterOnClickHander;
+    }
+
+    public interface MovieViewAdapterOnClickHander{
+        void onItemListClick(String item);
+    }
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         context = viewGroup.getContext();
@@ -53,15 +62,21 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
         notifyDataSetChanged();
     }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder{
+
+
+    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private ImageView mPosterImageView;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
             mPosterImageView = (ImageView) itemView.findViewById(R.id.poster_imageview);
-            // Onclick mPosterImageView.setOnClickListener(this);
+            mPosterImageView.setOnClickListener(this);
+        }
 
+        @Override
+        public void onClick(View v) {
+            mClickHandler.onItemListClick(movieData.get(getAdapterPosition()).getTitle());
         }
     }
 }

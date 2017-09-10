@@ -1,5 +1,6 @@
 package app.izhang.topratedmovies;
 
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -19,7 +21,7 @@ import app.izhang.topratedmovies.data.Movie;
 import app.izhang.topratedmovies.utilities.MovieJsonUtils;
 import app.izhang.topratedmovies.utilities.NetworkUtils;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements MovieViewAdapter.MovieViewAdapterOnClickHander{
 
     public RecyclerView mMoviesRV;
     public List<Movie> movieList;

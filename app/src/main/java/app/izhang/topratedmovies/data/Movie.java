@@ -1,10 +1,12 @@
 package app.izhang.topratedmovies.data;
 
+import java.io.Serializable;
+
 /**
  * Created by ivanzhang on 9/8/17.
  */
 
-public class Movie {
+public class Movie implements Serializable {
     private String title;
     private String release_date;
     private String poster_path;

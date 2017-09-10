@@ -33,15 +33,33 @@ public class HomeActivity extends AppCompatActivity implements MovieViewAdapter.
         setContentView(R.layout.activity_home);
 
         mMoviesRV = (RecyclerView) findViewById(R.id.rv_movies);
-        mMovieAdapter = new MovieViewAdapter();
+        mMovieAdapter = new MovieViewAdapter(this);
 
         GridLayoutManager gridLayoutManager
-                = new GridLayoutManager(this, 2);
+                = new GridLayoutManager(this, layoutCountBasedOnOrientation());
 
         mMoviesRV.setLayoutManager(gridLayoutManager);
         mMoviesRV.setAdapter(mMovieAdapter);
 
         new queryMovieDb().execute("");
+    }
+
+    private int layoutCountBasedOnOrientation(){
+        final int TWO_COLUMNS = 2;
+        final int FOUR_COLUMNS = 4;
+
+        int display_mode = getResources().getConfiguration().orientation;
+        if (display_mode == Configuration.ORIENTATION_PORTRAIT) {
+            return TWO_COLUMNS;
+        } else {
+            return FOUR_COLUMNS;
+        }
+
+    }
+
+    @Override
+    public void onItemListClick(String item) {
+        Toast.makeText(this, "Item Clicked: " + item, Toast.LENGTH_SHORT).show();
     }
 
     public class queryMovieDb extends AsyncTask<String, Integer, List<Movie>>{

@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">TopRatedMovies</string>
+
+    <!-- Key used passing data to detail activity view -->
+    <string name="key_movie_object">movieobjectkey</string>
+
+    <!-- Menu Related Items -->
+    <string name="action_top_rated">Top Rated</string>
+    <string name="action_most_popular">Most Popular</string>
+
 </resources>

@@ -8,6 +8,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -60,6 +62,13 @@ public class HomeActivity extends AppCompatActivity implements MovieViewAdapter.
     @Override
     public void onItemListClick(String item) {
         Toast.makeText(this, "Item Clicked: " + item, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.home_menu, menu);
+        return true;
     }
 
     public class queryMovieDb extends AsyncTask<String, Integer, List<Movie>>{

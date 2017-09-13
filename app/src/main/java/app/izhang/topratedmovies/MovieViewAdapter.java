@@ -1,6 +1,7 @@
 package app.izhang.topratedmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,7 +77,10 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
 
         @Override
         public void onClick(View v) {
-            mClickHandler.onItemListClick(movieData.get(getAdapterPosition()).getTitle());
+            Movie clickedMovie = movieData.get(getAdapterPosition());
+            Intent detailView = new Intent(context, DetailActivity.class);
+            detailView.putExtra(context.getString(R.string.key_movie_object), clickedMovie);
+            context.startActivity(detailView);
         }
     }
 }

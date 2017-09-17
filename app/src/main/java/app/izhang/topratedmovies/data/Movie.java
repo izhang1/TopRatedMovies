@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 /**
  * Created by ivanzhang on 9/8/17.
+ * data
+ * - model for the movie data that will be pulled in and created from the JSON data.
  */
 
 public class Movie implements Serializable {

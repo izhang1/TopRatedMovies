@@ -17,6 +17,8 @@ import app.izhang.topratedmovies.utilities.PosterPathUtils;
 
 /**
  * Created by ivanzhang on 9/8/17.
+ * - MovieViewAdapter class
+ * - Setup the RecyclerView with the passed in data and lays them out according to our list item
  */
 
 public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.MovieViewHolder>{
@@ -64,7 +66,10 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
     }
 
 
-
+    /**
+     * MovieViewHolder class - inner
+     * - Initalizes the view and sets the value as well as implements the onclick functions
+     */
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private ImageView mPosterImageView;

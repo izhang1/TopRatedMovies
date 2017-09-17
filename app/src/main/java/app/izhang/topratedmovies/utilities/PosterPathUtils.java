@@ -2,6 +2,10 @@ package app.izhang.topratedmovies.utilities;
 
 /**
  * Created by ivanzhang on 9/9/17.
+ * utilities
+ * - PosterPathUtils class
+ * - Utility class that will help create the URL
+ * - Moving to create a more dynamic approach based on the size of the screen.
  */
 
 public class PosterPathUtils {
@@ -20,6 +24,14 @@ public class PosterPathUtils {
     private static String SIZE_W780 = "w780";
     private static String SIZE_ORIGINAL = "original";
 
+
+    /**
+     * buildPosterUrl method
+     * - Takes in a path and size, returns a built string that can be queried to retrieve the poster image
+     * @param path
+     * @param size
+     * @return
+     */
     public static String buildPosterURL(String path, String size){
         // Defaulting size to W154
         return (BASE_URL + SIZE_W500 + "/" + path);

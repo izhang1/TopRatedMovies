@@ -14,6 +14,10 @@ import app.izhang.topratedmovies.data.Movie;
 
 /**
  * Created by ivanzhang on 9/16/17.
+ * utilities
+ * - MovieLoader class
+ * - extends AsyncTaskLoader and helps with querying the network request on a seperate thread.
+ * - Loaders also aligns with the activity lifecycle and will adjust to screen flips
  */
 
 public class MovieLoader extends AsyncTaskLoader<List<Movie>> {

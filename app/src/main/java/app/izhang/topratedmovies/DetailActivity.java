@@ -1,5 +1,11 @@
 package app.izhang.topratedmovies;
 
+/**
+ * Created by ivanzhang on 9/8/17.
+ *
+ * - DetailActivity showing additional data from the movie attributes
+ */
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -12,13 +18,13 @@ import app.izhang.topratedmovies.utilities.PosterPathUtils;
 
 public class DetailActivity extends AppCompatActivity {
 
-    public TextView mVoteAverageTV;
-    public TextView mOverviewTV;
-    public TextView mReleaseDateTV;
+    private TextView mVoteAverageTV;
+    private TextView mOverviewTV;
+    private TextView mReleaseDateTV;
 
-    public ImageView mPosterView;
+    private ImageView mPosterView;
 
-    public Movie mMovieData;
+    private Movie mMovieData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,11 @@ public class DetailActivity extends AppCompatActivity {
         showUI();
     }
 
+
+    /**
+     * initializes the UI views and populates them with the passed data from mMovieData
+     *
+     */
     public void showUI(){
 
         mPosterView = (ImageView) findViewById(R.id.poster_imageview);

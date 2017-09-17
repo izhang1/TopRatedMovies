@@ -1,8 +1,13 @@
 package app.izhang.topratedmovies;
 
+/**
+ * Created by ivanzhang on 9/8/17.
+ *
+ * - HomeActivity shows the queries data of movie posters and allows users to navigate to them
+ * - Also provides the ability for the user to toggle between the sorting of top rated or most popular
+ */
+
 import android.content.res.Configuration;
-import android.nfc.Tag;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,29 +18,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-// Loaders
 import android.content.Loader;
 import android.app.LoaderManager;
 
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import app.izhang.topratedmovies.data.Movie;
-import app.izhang.topratedmovies.utilities.MovieJsonUtils;
 import app.izhang.topratedmovies.utilities.NetworkUtils;
 import app.izhang.topratedmovies.utilities.MovieLoader;
 
 
 public class HomeActivity extends AppCompatActivity implements MovieViewAdapter.MovieViewAdapterOnClickHander, LoaderManager.LoaderCallbacks<List<Movie>>{
 
-    public RecyclerView mMoviesRV;
-    public List<Movie> movieList;
-    public MovieViewAdapter mMovieAdapter;
-    public MovieLoader mMovieLoader;
+    private RecyclerView mMoviesRV;
+    private List<Movie> movieList;
+    private MovieViewAdapter mMovieAdapter;
+    private MovieLoader mMovieLoader;
 
     private final static int LOADER_ID = 1001;
 
@@ -54,6 +53,10 @@ public class HomeActivity extends AppCompatActivity implements MovieViewAdapter.
         getLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
+    /**
+     * initializes the UI views
+     *
+     */
     private void showUI(){
         mMoviesRV = (RecyclerView) findViewById(R.id.rv_movies);
         mMovieAdapter = new MovieViewAdapter(this);
@@ -65,6 +68,10 @@ public class HomeActivity extends AppCompatActivity implements MovieViewAdapter.
         mMoviesRV.setAdapter(mMovieAdapter);
     }
 
+    /**
+     * helper method to determine the orientation of the phone and return the grid length layout
+     *
+     */
     private int layoutCountBasedOnOrientation(){
         final int TWO_COLUMNS = 2;
         final int FOUR_COLUMNS = 4;
@@ -94,6 +101,8 @@ public class HomeActivity extends AppCompatActivity implements MovieViewAdapter.
     public boolean onOptionsItemSelected(MenuItem item) {
         Bundle bundle = new Bundle();
 
+        // Switch case between the most popular and top rated
+        // Pass an integer value to identity which sort was chosen
         switch (item.getItemId()){
             case R.id.action_most_popular:
                 bundle.putInt(MENU_KEY, NetworkUtils.MOST_POPULAR);
@@ -107,6 +116,7 @@ public class HomeActivity extends AppCompatActivity implements MovieViewAdapter.
 
         return true;
     }
+
 
     @Override
     public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {

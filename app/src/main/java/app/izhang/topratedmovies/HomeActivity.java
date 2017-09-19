@@ -1,10 +1,10 @@
 package app.izhang.topratedmovies;
 
-/**
- * Created by ivanzhang on 9/8/17.
- *
- * - HomeActivity shows the queries data of movie posters and allows users to navigate to them
- * - Also provides the ability for the user to toggle between the sorting of top rated or most popular
+/*
+  Created by ivanzhang on 9/8/17.
+
+  - HomeActivity shows the queries data of movie posters and allows users to navigate to them
+  - Also provides the ability for the user to toggle between the sorting of top rated or most popular
  */
 
 import android.content.res.Configuration;
@@ -29,16 +29,12 @@ import app.izhang.topratedmovies.utilities.NetworkUtils;
 import app.izhang.topratedmovies.utilities.MovieLoader;
 
 
-public class HomeActivity extends AppCompatActivity implements MovieViewAdapter.MovieViewAdapterOnClickHander, LoaderManager.LoaderCallbacks<List<Movie>>{
+public class HomeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>>{
 
-    private RecyclerView mMoviesRV;
-    private List<Movie> movieList;
     private MovieViewAdapter mMovieAdapter;
-    private MovieLoader mMovieLoader;
 
     private final static int LOADER_ID = 1001;
 
-    private String TAG = "HomeActivity.java";
     private String MENU_KEY = "menu_loader_key";
 
 
@@ -46,8 +42,6 @@ public class HomeActivity extends AppCompatActivity implements MovieViewAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        TAG = getClass().toString();
 
         showUI();
         getLoaderManager().initLoader(LOADER_ID, null, this);
@@ -58,8 +52,8 @@ public class HomeActivity extends AppCompatActivity implements MovieViewAdapter.
      *
      */
     private void showUI(){
-        mMoviesRV = (RecyclerView) findViewById(R.id.rv_movies);
-        mMovieAdapter = new MovieViewAdapter(this);
+        RecyclerView mMoviesRV = (RecyclerView) findViewById(R.id.rv_movies);
+        mMovieAdapter = new MovieViewAdapter();
 
         GridLayoutManager gridLayoutManager
                 = new GridLayoutManager(this, layoutCountBasedOnOrientation());
@@ -83,11 +77,6 @@ public class HomeActivity extends AppCompatActivity implements MovieViewAdapter.
             return FOUR_COLUMNS;
         }
 
-    }
-
-    @Override
-    public void onItemListClick(String item) {
-        Toast.makeText(this, "Item Clicked: " + item, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -120,24 +109,21 @@ public class HomeActivity extends AppCompatActivity implements MovieViewAdapter.
 
     @Override
     public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
-        Log.v(TAG, "onCreateLoader()");
         int passedSort = 0;
         if(args != null) passedSort = args.getInt(MENU_KEY);
-        mMovieLoader = new MovieLoader(getApplicationContext(), passedSort);
+        MovieLoader mMovieLoader = new MovieLoader(getApplicationContext(), passedSort);
         return mMovieLoader;
     }
 
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
-        Log.v(TAG, "onLoadFinished()");
-        movieList = data;
+        List<Movie> movieList = data;
         mMovieAdapter.setData((ArrayList<Movie>) movieList);
         mMovieAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoaderReset(Loader<List<Movie>> loader) {
-        Log.v(TAG, "onLoaderReset()");
         showUI();
     }
 

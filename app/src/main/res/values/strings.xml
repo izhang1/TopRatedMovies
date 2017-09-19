@@ -8,4 +8,10 @@
     <string name="action_top_rated">Top Rated</string>
     <string name="action_most_popular">Most Popular</string>
 
+    <!-- Detail View Labels for content -->
+    <string name="overview_label">Release Date: </string>
+    <string name="vote_average_label">Vote Average: </string>
+    <string name="release_date_label">Release Date: </string>
+
+
 </resources>

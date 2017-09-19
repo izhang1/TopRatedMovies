@@ -26,15 +26,6 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
     private ArrayList<Movie> movieData;
     private Context context;
 
-    final private MovieViewAdapterOnClickHander mClickHandler;
-
-    public MovieViewAdapter(MovieViewAdapterOnClickHander movieViewAdapterOnClickHander){
-        this.mClickHandler = movieViewAdapterOnClickHander;
-    }
-
-    public interface MovieViewAdapterOnClickHander{
-        void onItemListClick(String item);
-    }
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         context = viewGroup.getContext();
@@ -68,7 +59,7 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
 
     /**
      * MovieViewHolder class - inner
-     * - Initalizes the view and sets the value as well as implements the onclick functions
+     * - Initializes the view and sets the value as well as implements the onclick functions
      */
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 

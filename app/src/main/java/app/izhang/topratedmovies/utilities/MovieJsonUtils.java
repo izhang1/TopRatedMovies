@@ -21,9 +21,7 @@ import app.izhang.topratedmovies.data.Movie;
  *
  */
 
-public class MovieJsonUtils {
-
-    private static String TAG = "MovieJsonUtils.class";
+class MovieJsonUtils {
 
     public static List<Movie> getMovieListFromJson(Context context, String movieJsonStr)
             throws JSONException {
@@ -42,19 +40,16 @@ public class MovieJsonUtils {
         ArrayList<Movie> movieList = new ArrayList<>();
 
         JSONObject movieJson = new JSONObject(movieJsonStr);
-        Log.v(TAG, "movieJson: " + movieJson.toString());
 
         JSONArray movieArray = movieJson.getJSONArray(MOVIEDB_RESULT);
-        Log.v(TAG, "movieArr: " + movieArray.toString());
 
-        /**
-         *  Looping through the array and saving the movie values into a list of movies passed back to the calling method.
-         *  **/
+        /*
+           Looping through the array and saving the movie values into a list of movies passed back to the calling method.
+           **/
         for (int i = 0; i < movieArray.length(); i++) {
             JSONObject tempObj = (JSONObject) movieArray.get(i);
             Movie movie = new Movie(tempObj.getString(MOVIE_TITLE), tempObj.getString(MOVIE_RELEASE), tempObj.getString(POSTER_PATH), tempObj.getString(MOVIE_OVERVIEW), tempObj.getInt(VOTE_AVG));
             movieList.add(movie);
-            Log.v(TAG, "Object" + i + " :"+  tempObj.toString());
         }
 
         return movieList;

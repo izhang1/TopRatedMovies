@@ -16,14 +16,14 @@ import app.izhang.topratedmovies.data.Movie;
  * Created by ivanzhang on 9/16/17.
  * utilities
  * - MovieLoader class
- * - extends AsyncTaskLoader and helps with querying the network request on a seperate thread.
+ * - extends AsyncTaskLoader and helps with querying the network request on a separate thread.
  * - Loaders also aligns with the activity lifecycle and will adjust to screen flips
  */
 
 public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
 
     private static final String TAG = MovieLoader.class.toString();
-    private static Context mContext;
+    private Context mContext;
     private int mSort = 0;
 
     public MovieLoader(Context context, int passedSort) {
@@ -39,11 +39,9 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
 
     @Override
     public List<Movie> loadInBackground() {
-        Log.v(TAG, "loadInBackground(), mSort: " + mSort);
 
         URL queryUrl = NetworkUtils.buildUrl(mSort);
 
-        Log.v(TAG, "Query URL: " + queryUrl.toString());
         try{
             String jsonResponse = NetworkUtils.getResponseFromHttpUrl(queryUrl);
             Log.v(TAG, jsonResponse);
@@ -51,9 +49,7 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
             List<Movie> parsedMovieList = MovieJsonUtils.getMovieListFromJson(mContext, jsonResponse);
             return parsedMovieList;
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
 

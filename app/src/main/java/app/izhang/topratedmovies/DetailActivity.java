@@ -1,9 +1,9 @@
 package app.izhang.topratedmovies;
 
-/**
- * Created by ivanzhang on 9/8/17.
- *
- * - DetailActivity showing additional data from the movie attributes
+/*
+  Created by ivanzhang on 9/8/17.
+
+  - DetailActivity showing additional data from the movie attributes
  */
 
 import android.support.v7.app.AppCompatActivity;
@@ -18,12 +18,6 @@ import app.izhang.topratedmovies.utilities.PosterPathUtils;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private TextView mVoteAverageTV;
-    private TextView mOverviewTV;
-    private TextView mReleaseDateTV;
-
-    private ImageView mPosterView;
-
     private Movie mMovieData;
 
     @Override
@@ -37,7 +31,7 @@ public class DetailActivity extends AppCompatActivity {
             mMovieData = (Movie) receivedData.get(getString(R.string.key_movie_object));
         }
 
-        setTitle(mMovieData.getTitle());
+        setTitle(mMovieData != null ? mMovieData.getTitle() : null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         showUI();
@@ -48,18 +42,17 @@ public class DetailActivity extends AppCompatActivity {
      * initializes the UI views and populates them with the passed data from mMovieData
      *
      */
-    public void showUI(){
-
-        mPosterView = (ImageView) findViewById(R.id.poster_imageview);
+    private void showUI(){
+        ImageView mPosterView = (ImageView) findViewById(R.id.poster_imageview);
         String posterPath = PosterPathUtils.buildPosterURL(mMovieData.getPoster_path(), "size");
         Picasso.with(this).load(posterPath).into(mPosterView);
 
-        mVoteAverageTV = (TextView) findViewById(R.id.tv_vote_average);
-        mOverviewTV = (TextView) findViewById(R.id.tv_overview);
-        mReleaseDateTV = (TextView) findViewById(R.id.tv_release_date);
+        TextView mVoteAverageTV = (TextView) findViewById(R.id.tv_vote_average);
+        TextView mOverviewTV = (TextView) findViewById(R.id.tv_overview);
+        TextView mReleaseDateTV = (TextView) findViewById(R.id.tv_release_date);
 
-        mVoteAverageTV.setText("Vote Average: " + mMovieData.getVote_average());
-        mOverviewTV.setText("Overview: " + mMovieData.getOverview());
-        mReleaseDateTV.setText("Release Date: " + mMovieData.getRelease_date());
+        mVoteAverageTV.setText(getString(R.string.vote_average_label) + mMovieData.getVote_average());
+        mOverviewTV.setText(getString(R.string.overview_label) + mMovieData.getOverview());
+        mReleaseDateTV.setText(getString(R.string.release_date_label) + mMovieData.getRelease_date());
     }
 }

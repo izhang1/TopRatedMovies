@@ -43,9 +43,7 @@ class MovieJsonUtils {
 
         JSONArray movieArray = movieJson.getJSONArray(MOVIEDB_RESULT);
 
-        /*
-           Looping through the array and saving the movie values into a list of movies passed back to the calling method.
-           **/
+        /* Looping through the array and saving the movie values into a list of movies passed back to the calling method. */
         for (int i = 0; i < movieArray.length(); i++) {
             JSONObject tempObj = (JSONObject) movieArray.get(i);
             Movie movie = new Movie(tempObj.getString(MOVIE_TITLE), tempObj.getString(MOVIE_RELEASE), tempObj.getString(POSTER_PATH), tempObj.getString(MOVIE_OVERVIEW), tempObj.getInt(VOTE_AVG));

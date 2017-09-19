@@ -12,11 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import android.content.Loader;
 import android.app.LoaderManager;
@@ -34,9 +32,6 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     private MovieViewAdapter mMovieAdapter;
 
     private final static int LOADER_ID = 1001;
-
-    private String MENU_KEY = "menu_loader_key";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,11 +89,11 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         // Pass an integer value to identity which sort was chosen
         switch (item.getItemId()){
             case R.id.action_most_popular:
-                bundle.putInt(MENU_KEY, NetworkUtils.MOST_POPULAR);
+                bundle.putInt(getString(R.string.menu_key), NetworkUtils.MOST_POPULAR);
                 getLoaderManager().restartLoader(LOADER_ID, bundle, this);
                 break;
             case R.id.action_top_rated:
-                bundle.putInt(MENU_KEY, NetworkUtils.TOP_RATED);
+                bundle.putInt(getString(R.string.menu_key), NetworkUtils.TOP_RATED);
                 getLoaderManager().restartLoader(LOADER_ID, bundle, this);
                 break;
         }
@@ -110,7 +105,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
         int passedSort = 0;
-        if(args != null) passedSort = args.getInt(MENU_KEY);
+        if(args != null) passedSort = args.getInt(getString(R.string.menu_key));
         MovieLoader mMovieLoader = new MovieLoader(getApplicationContext(), passedSort);
         return mMovieLoader;
     }

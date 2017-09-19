@@ -22,7 +22,6 @@ import app.izhang.topratedmovies.data.Movie;
 
 public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
 
-    private static final String TAG = MovieLoader.class.toString();
     private Context mContext;
     private int mSort = 0;
 
@@ -44,7 +43,6 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
 
         try{
             String jsonResponse = NetworkUtils.getResponseFromHttpUrl(queryUrl);
-            Log.v(TAG, jsonResponse);
 
             List<Movie> parsedMovieList = MovieJsonUtils.getMovieListFromJson(mContext, jsonResponse);
             return parsedMovieList;

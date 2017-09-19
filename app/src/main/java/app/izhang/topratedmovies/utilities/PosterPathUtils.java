@@ -17,6 +17,7 @@ public class PosterPathUtils {
     private static String SIZE_W154 = "w154";
     private static String SIZE_W185 = "w185";
     private static String SIZE_W342 = "w342";
+    private static String SIZE_W500 = "w500";
     private static String SIZE_W780 = "w780";
     private static String SIZE_ORIGINAL = "original";
 
@@ -30,8 +31,6 @@ public class PosterPathUtils {
      */
     public static String buildPosterURL(String path, String size){
         // Defaulting size to W500
-        String SIZE_W500 = "w500";
-
         return (BASE_URL + SIZE_W500 + "/" + path);
     }
 }

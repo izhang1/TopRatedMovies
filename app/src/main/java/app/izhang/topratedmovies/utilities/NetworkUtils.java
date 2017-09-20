@@ -1,7 +1,11 @@
 package app.izhang.topratedmovies.utilities;
 
-/**
- * Created by ivanzhang on 9/8/17.
+/*
+  Created by ivanzhang on 9/8/17.
+  utilities
+  - NetworkUtils class
+  - abstract some of the networking requests being made
+
  */
 
 /*
@@ -29,33 +33,20 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
-import android.net.Uri;
-import android.util.Log;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Scanner;
 
 /**
  * These utilities will be used to communicate with the weather servers.
  */
 public final class NetworkUtils {
 
-    private static final String TAG = NetworkUtils.class.getSimpleName();
 
-    private static final String TOP_RATED_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=<API>";
-    private static final String MOST_POPULAR_URL = "http://api.themoviedb.org/3/movie/popular?api_key=<API>";
+    // TODO: Change the API key to your own
+    private static final String API_KEY = "<YOUR_KEY>";
 
-    private static final String DYNAMIC_WEATHER_URL =
-            "https://andfun-weather.udacity.com/weather";
+    private static final String TOP_RATED_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
+    private static final String MOST_POPULAR_URL = "http://api.themoviedb.org/3/movie/popular?api_key=";
+    private static final String BASE_URL = "http://api.themoviedb.org/3/movie/";
 
-    private static final String STATIC_WEATHER_URL =
-            "https://andfun-weather.udacity.com/staticweather";
-
-    private static final String FORECAST_BASE_URL = STATIC_WEATHER_URL;
 
     /*
      * NOTE: These values only effect responses from OpenWeatherMap, NOT from the fake weather
@@ -64,34 +55,28 @@ public final class NetworkUtils {
      * we are not going to show you how to do so in this course.
      */
 
-    /* The format we want our API to return */
-    private static final String format = "json";
-    /* The units we want our API to return */
-    private static final String units = "metric";
-    /* The number of days we want our API to return */
-    private static final int numDays = 14;
 
-    final static String QUERY_PARAM = "q";
-    final static String LAT_PARAM = "lat";
-    final static String LON_PARAM = "lon";
-    final static String FORMAT_PARAM = "mode";
-    final static String UNITS_PARAM = "units";
-    final static String DAYS_PARAM = "cnt";
+    // Passed int that represents top rated
+    public static final int TOP_RATED = 1;
+    public static final int MOST_POPULAR = 2;
+
 
     /**
      * Builds the URL used to talk to the weather server using a location. This location is based
      * on the query capabilities of the weather provider that we are using.
      *
-     * @param locationQuery The location that will be queried for.
+     * @param passedCategory The sort that will be queried for.
      * @return The URL to use to query the weather server.
      */
-    public static URL buildUrl(String locationQuery) {
-        Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                .appendQueryParameter(QUERY_PARAM, locationQuery)
-                .appendQueryParameter(FORMAT_PARAM, format)
-                .appendQueryParameter(UNITS_PARAM, units)
-                .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
-                .build();
+    public static URL buildUrl(int passedCategory) {
+
+        Uri builtUri;
+
+        if(passedCategory == TOP_RATED){
+            builtUri = Uri.parse(TOP_RATED_URL);
+        }else{
+            builtUri = Uri.parse(MOST_POPULAR_URL);
+        }
 
         URL url = null;
         try {
@@ -100,22 +85,7 @@ public final class NetworkUtils {
             e.printStackTrace();
         }
 
-        Log.v(TAG, "Built URI " + url);
-
         return url;
-    }
-
-    /**
-     * Builds the URL used to talk to the weather server using latitude and longitude of a
-     * location.
-     *
-     * @param lat The latitude of the location
-     * @param lon The longitude of the location
-     * @return The Url to use to query the weather server.
-     */
-    public static URL buildUrl(Double lat, Double lon) {
-        /** This will be implemented in a future lesson **/
-        return null;
     }
 
     /**

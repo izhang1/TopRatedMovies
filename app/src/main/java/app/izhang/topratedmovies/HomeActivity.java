@@ -18,6 +18,8 @@ import android.view.MenuItem;
 
 import android.content.Loader;
 import android.app.LoaderManager;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +30,11 @@ import app.izhang.topratedmovies.utilities.MovieLoader;
 
 
 public class HomeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>>{
+    private ProgressBar mProgressBar;
 
+    private RecyclerView mMovieRecyclerView;
     private MovieViewAdapter mMovieAdapter;
+    private List<Movie> mData;
 
     private final static int LOADER_ID = 1001;
 
@@ -47,14 +52,25 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
      *
      */
     private void showUI(){
-        RecyclerView mMoviesRV = (RecyclerView) findViewById(R.id.rv_movies);
+        mProgressBar = (ProgressBar) this.findViewById(R.id.loading_progress_bar);
+        mMovieRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
         mMovieAdapter = new MovieViewAdapter();
 
         GridLayoutManager gridLayoutManager
                 = new GridLayoutManager(this, layoutCountBasedOnOrientation());
 
-        mMoviesRV.setLayoutManager(gridLayoutManager);
-        mMoviesRV.setAdapter(mMovieAdapter);
+        mMovieRecyclerView.setLayoutManager(gridLayoutManager);
+
+        mMovieRecyclerView.setAdapter(mMovieAdapter);
+    }
+
+    /**
+     * Called after Loader finishes. Populates the data into the recycler view.
+     *
+     */
+    private void populateData(){
+        mMovieAdapter.setData((ArrayList<Movie>) mData);
+        mMovieAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -104,6 +120,9 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mMovieRecyclerView.setVisibility(View.INVISIBLE);
+
         int passedSort = 0;
         if(args != null) passedSort = args.getInt(getString(R.string.menu_key));
         MovieLoader mMovieLoader = new MovieLoader(getApplicationContext(), passedSort);
@@ -112,14 +131,17 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
-        List<Movie> movieList = data;
-        mMovieAdapter.setData((ArrayList<Movie>) movieList);
-        mMovieAdapter.notifyDataSetChanged();
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mMovieRecyclerView.setVisibility(View.VISIBLE);
+
+        mData = data;
+        populateData();
     }
 
     @Override
     public void onLoaderReset(Loader<List<Movie>> loader) {
-        showUI();
+        if(mData != null) populateData();
+        else getLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
 }

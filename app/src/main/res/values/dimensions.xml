@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="margin_layout_top">8dp</dimen>
+    <dimen name="margin_layout_default">16dp</dimen>
+    <dimen name="margin_bottom_progress_bar">48dp</dimen>
+</resources>

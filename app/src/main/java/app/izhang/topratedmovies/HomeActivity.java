@@ -120,9 +120,11 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
+        /* Shows progress bar and hides the recycler view */
         mProgressBar.setVisibility(View.VISIBLE);
         mMovieRecyclerView.setVisibility(View.INVISIBLE);
 
+        /* Checks to see if a value was passed in and passes that along to the loader method */
         int passedSort = 0;
         if(args != null) passedSort = args.getInt(getString(R.string.menu_key));
         MovieLoader mMovieLoader = new MovieLoader(getApplicationContext(), passedSort);
@@ -131,6 +133,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
+        /* Shows recycler view and hides the data*/
         mProgressBar.setVisibility(View.INVISIBLE);
         mMovieRecyclerView.setVisibility(View.VISIBLE);
 
@@ -140,6 +143,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<List<Movie>> loader) {
+        /* Checks to see if data is already available, if not inits the loader */
         if(mData != null) populateData();
         else getLoaderManager().initLoader(LOADER_ID, null, this);
     }

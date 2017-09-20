@@ -38,9 +38,10 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
 
     @Override
     public List<Movie> loadInBackground() {
-
+        /* Builds the URL we'll use to query */
         URL queryUrl = NetworkUtils.buildUrl(mSort);
 
+        /* Queries the URL and parses the data using the MovieJsonUtils method getMovieListFromJson */
         try{
             String jsonResponse = NetworkUtils.getResponseFromHttpUrl(queryUrl);
 

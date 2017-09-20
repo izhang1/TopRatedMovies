@@ -62,8 +62,7 @@ public final class NetworkUtils {
 
 
     /**
-     * Builds the URL used to talk to the weather server using a location. This location is based
-     * on the query capabilities of the weather provider that we are using.
+     * Builds the URL based on the passed in sort the user wants.
      *
      * @param passedCategory The sort that will be queried for.
      * @return The URL to use to query the weather server.

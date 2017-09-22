@@ -17,6 +17,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    // TODO: Change the API key to your own via the gradle.properties
+    // Ref: https://stackoverflow.com/questions/33134031/is-there-a-safe-way-to-manage-api-keys/34021467#34021467
+    buildTypes.each {
+        it.buildConfigField 'String', 'MOVIE_DB_KEY', MyTheMovieDBApiToken
+    }
 }
 
 dependencies {

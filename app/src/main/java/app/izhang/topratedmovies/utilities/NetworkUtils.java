@@ -34,14 +34,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
+import app.izhang.topratedmovies.BuildConfig;
+
 /**
  * These utilities will be used to communicate with the weather servers.
  */
 public final class NetworkUtils {
-
-
-    // TODO: Change the API key to your own
-    private static final String API_KEY = "<YOUR_KEY>";
 
     private static final String TOP_RATED_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
     private static final String MOST_POPULAR_URL = "http://api.themoviedb.org/3/movie/popular?api_key=";
@@ -72,9 +70,9 @@ public final class NetworkUtils {
         Uri builtUri;
 
         if(passedCategory == TOP_RATED){
-            builtUri = Uri.parse(TOP_RATED_URL);
+            builtUri = Uri.parse(TOP_RATED_URL + BuildConfig.MOVIE_DB_KEY);
         }else{
-            builtUri = Uri.parse(MOST_POPULAR_URL);
+            builtUri = Uri.parse(MOST_POPULAR_URL + BuildConfig.MOVIE_DB_KEY);
         }
 
         URL url = null;

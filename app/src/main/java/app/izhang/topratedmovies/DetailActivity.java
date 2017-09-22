@@ -28,7 +28,7 @@ public class DetailActivity extends AppCompatActivity {
 
         Bundle receivedData = getIntent().getExtras();
         if(receivedData != null) {
-            mMovieData = (Movie) receivedData.get(getString(R.string.key_movie_object));
+            mMovieData = receivedData.getParcelable(getString(R.string.key_movie_object));
         }
 
         setTitle(mMovieData != null ? mMovieData.getTitle() : null);
@@ -44,14 +44,14 @@ public class DetailActivity extends AppCompatActivity {
      */
     private void showUI(){
         ImageView mPosterView = (ImageView) findViewById(R.id.poster_imageview);
-        String posterPath = PosterPathUtils.buildPosterURL(mMovieData.getPoster_path(), "size");
+        String posterPath = PosterPathUtils.buildPosterURL(mMovieData.getPosterPath(), "size");
         Picasso.with(this).load(posterPath).into(mPosterView);
 
         TextView mVoteAverageTV = (TextView) findViewById(R.id.tv_vote_average);
         TextView mOverviewTV = (TextView) findViewById(R.id.tv_overview);
         TextView mReleaseDateTV = (TextView) findViewById(R.id.tv_release_date);
 
-        mVoteAverageTV.setText(getString(R.string.vote_average_label) + mMovieData.getVote_average());
+        mVoteAverageTV.setText(getString(R.string.vote_average_label) + mMovieData.getVoteAverage());
         mOverviewTV.setText(getString(R.string.overview_label) + mMovieData.getOverview());
         mReleaseDateTV.setText(getString(R.string.release_date_label) + mMovieData.getRelease_date());
     }

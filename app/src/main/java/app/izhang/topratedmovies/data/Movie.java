@@ -1,6 +1,7 @@
 package app.izhang.topratedmovies.data;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by ivanzhang on 9/8/17.
@@ -8,19 +9,27 @@ import java.io.Serializable;
  * - model for the movie data that will be pulled in and created from the JSON data.
  */
 
-public class Movie implements Serializable {
+public class Movie implements Parcelable {
     private String title;
-    private String release_date;
-    private String poster_path;
+    private String releaseDate;
+    private String posterPath;
     private String overview;
-    private int vote_average;
+    private int voteAverage;
 
-    public Movie(String title, String release_date, String poster_path, String overview, int vote_average){
+    public Movie(String title, String release_date, String posterPath, String overview, int voteAverage){
         this.title = title;
-        this.release_date = release_date;
-        this.poster_path = poster_path;
+        this.releaseDate = release_date;
+        this.posterPath = posterPath;
         this.overview = overview;
-        this.vote_average = vote_average;
+        this.voteAverage = voteAverage;
+    }
+
+    public Movie(Parcel in) {
+        title = in.readString();
+        releaseDate = in.readString();
+        posterPath = in.readString();
+        overview = in.readString();
+        voteAverage = in.readInt();
     }
 
     public String getTitle() {
@@ -32,19 +41,19 @@ public class Movie implements Serializable {
     }
 
     public String getRelease_date() {
-        return release_date;
+        return releaseDate;
     }
 
     public void setRelease_date(String release_date) {
-        this.release_date = release_date;
+        this.releaseDate = release_date;
     }
 
-    public String getPoster_path() {
-        return poster_path;
+    public String getPosterPath() {
+        return posterPath;
     }
 
-    public void setPoster_path(String poster_path) {
-        this.poster_path = poster_path;
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
     }
 
     public String getOverview() {
@@ -55,7 +64,33 @@ public class Movie implements Serializable {
         this.overview = overview;
     }
 
-    public int getVote_average() {
-        return vote_average;
+    public int getVoteAverage() {
+        return voteAverage;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(releaseDate);
+        dest.writeString(posterPath);
+        dest.writeString(overview);
+        dest.writeInt(voteAverage);
+    }
+
+    // Creator
+    public static final Parcelable.Creator CREATOR
+            = new Parcelable.Creator() {
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }

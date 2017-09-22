@@ -1,50 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="app.izhang.topratedmovies.DetailActivity">
-
-    <ImageView
-        android:id="@+id/poster_imageview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/margin_layout_default"
-        app:srcCompat="@mipmap/ic_launcher" />
-
-    <TextView
-        android:id="@+id/tv_overview"
+    android:layout_height="wrap_content"
+    >
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Overview"
-        android:layout_alignTop="@+id/poster_imageview"
-        android:layout_toEndOf="@+id/poster_imageview"
-        android:layout_marginStart="@dimen/margin_layout_default" />
+        android:layout_height="match_parent"
+        tools:context="app.izhang.topratedmovies.DetailActivity">
 
-    <TextView
-        android:id="@+id/tv_release_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_overview"
-        android:layout_alignStart="@+id/tv_overview"
-        android:text="Release Date"
-        android:layout_marginTop="@dimen/margin_layout_top"
-        />
+        <ImageView
+            android:id="@+id/poster_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="@dimen/margin_layout_default"
+            app:srcCompat="@mipmap/ic_launcher" />
 
-    <TextView
-        android:id="@+id/tv_vote_average"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_release_date"
-        android:layout_alignStart="@+id/tv_overview"
-        android:text="Vote Average"
-        android:layout_marginTop="@dimen/margin_layout_top"
-        />
+        <TextView
+            android:id="@+id/tv_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/poster_imageview"
+            android:layout_marginStart="@dimen/margin_layout_default"
+            android:layout_toEndOf="@+id/poster_imageview"
+            android:text="Overview"
+            android:textSize="14sp" />
 
+        <TextView
+            android:id="@+id/tv_release_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_overview"
+            android:layout_alignStart="@+id/tv_overview"
+            android:text="Release Date"
+            android:layout_marginTop="@dimen/margin_layout_top"
+            />
 
-
-
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tv_vote_average"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_release_date"
+            android:layout_alignStart="@+id/tv_overview"
+            android:text="Vote Average"
+            android:layout_marginTop="@dimen/margin_layout_top"
+            />
+    </RelativeLayout>
+</ScrollView>

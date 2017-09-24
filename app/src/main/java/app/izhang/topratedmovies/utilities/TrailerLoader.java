@@ -14,6 +14,11 @@ import app.izhang.topratedmovies.data.Trailer;
 
 /**
  * Created by ivanzhang on 9/24/17.
+ * utilities
+ * - TrailerLoader class
+ * - extends AsyncTaskLoader and helps with querying the network request on a separate thread.
+ * - calls the appropriate HTTP requests, parses the JSON data and returns a list of Trailers back to the main thread
+ *
  */
 
 public class TrailerLoader extends AsyncTaskLoader<List<Trailer>>{

@@ -88,6 +88,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     }
 
+    /**
+     * Populates the movie data, called once the loader is finished or if the activity lifecycle resets
+     */
     private void populateTrailerDate(){
         mTrailerViewAdapter.setData(mTrailerList);
         mTrailerViewAdapter.notifyDataSetChanged();

@@ -67,7 +67,7 @@ public final class NetworkUtils {
      * Builds the URL based on the passed in sort the user wants.
      *
      * @param passedCategory The sort that will be queried for.
-     * @return The URL to use to query the weather server.
+     * @return The URL to use to query the service.
      */
     public static URL buildUrl(int passedCategory) {
 
@@ -98,6 +98,12 @@ public final class NetworkUtils {
         return url;
     }
 
+    /**
+     * Builds the URL based on the passed in the ID of the movie.
+     *
+     * @param passedCategory The value that is needed, Reviews or Trailers
+     * @return The URL to use to query the service
+     */
     public static URL buildUrlWithId(int passedCategory, String id){
         Uri builtUri = null;
 

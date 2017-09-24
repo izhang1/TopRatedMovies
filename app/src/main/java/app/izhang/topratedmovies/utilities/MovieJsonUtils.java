@@ -19,7 +19,8 @@ import app.izhang.topratedmovies.data.Trailer;
  * utilities
  * - MovieJsonUtils class
  * - This class contains methods to parse JSON objects and pull out needed information for movies.
- *
+ * - This class contains methods to parse JSON objects and pull out needed information for trailers.
+
  */
 
 class MovieJsonUtils {
@@ -61,10 +62,13 @@ class MovieJsonUtils {
         return movieList;
     }
 
+
     public static List<Trailer> getTrailerFromJson(String trailerJsonStr) throws JSONException{
 
+        /* ID to gather the youtube list */
         final String TRAILER_YOUTUBE = "youtube";
 
+        /* Attributes of the trailer that are needed to display and setup the YouTube intent */
         final String TRAILER_NAME = "name";
         final String TRAILER_SOURCE = "source";
 
@@ -73,6 +77,7 @@ class MovieJsonUtils {
         JSONObject trailerJson = new JSONObject(trailerJsonStr);
         JSONArray trailierArray = trailerJson.getJSONArray(TRAILER_YOUTUBE);
 
+        /* Looping through to parse the JSON data and saving that information into a new trailer object */
         for(int i = 0; i < trailierArray.length(); i++){
             JSONObject tempObj = (JSONObject) trailierArray.get(i);
             Trailer trailer = new Trailer(tempObj.getString(TRAILER_NAME),

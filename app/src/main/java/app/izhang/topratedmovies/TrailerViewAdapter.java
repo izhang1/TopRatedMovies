@@ -16,6 +16,10 @@ import app.izhang.topratedmovies.data.Trailer;
 
 /**
  * Created by ivanzhang on 9/24/17.
+ * - TrailerViewAdapter class
+ * - Setup the RecyvlerView with trailer data showing the name
+ * - onClick, creates and starts a YouTube intent to show the trailer
+ *
  */
 
 public class TrailerViewAdapter extends RecyclerView.Adapter<TrailerViewAdapter.TrailerViewHolder>{

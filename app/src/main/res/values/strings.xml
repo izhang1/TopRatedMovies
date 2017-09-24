@@ -14,6 +14,7 @@
     <string name="release_date_label">Release Date: </string>
 
     <!-- Menu Key -->
-    <string name="menu_key">menu_key_loader</string>
+    <string name="menu_key">menu_key_loader</string>\
+
 
 </resources>

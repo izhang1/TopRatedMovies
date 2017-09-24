@@ -8,12 +8,14 @@ package app.izhang.topratedmovies;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import app.izhang.topratedmovies.data.Movie;
+import app.izhang.topratedmovies.utilities.NetworkUtils;
 import app.izhang.topratedmovies.utilities.PosterPathUtils;
 
 public class DetailActivity extends AppCompatActivity {
@@ -30,6 +32,9 @@ public class DetailActivity extends AppCompatActivity {
         if(receivedData != null) {
             mMovieData = receivedData.getParcelable(getString(R.string.key_movie_object));
         }
+
+
+        Log.v("TestingBuildURL", NetworkUtils.buildUrlWithId(NetworkUtils.TRAILERS, mMovieData.getId()).toString());
 
         setTitle("Movie Details");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -52,7 +57,7 @@ public class DetailActivity extends AppCompatActivity {
         TextView mReleaseDateTV = (TextView) findViewById(R.id.tv_release_date);
         TextView mMovieTitleTV = (TextView) findViewById(R.id.tv_movie_title);
 
-        mMovieTitleTV.setText(mMovieData.getTitle());
+        mMovieTitleTV.setText(mMovieData.getTitle() + " ID:" + mMovieData.getId());
         mVoteAverageTV.setText(getString(R.string.vote_average_label) + mMovieData.getVoteAverage());
         mOverviewTV.setText(getString(R.string.overview_label) + mMovieData.getOverview());
         mReleaseDateTV.setText(getString(R.string.overview_label) + mMovieData.getRelease_date());

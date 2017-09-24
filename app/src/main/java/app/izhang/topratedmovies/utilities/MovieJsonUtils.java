@@ -35,6 +35,7 @@ class MovieJsonUtils {
         final String POSTER_PATH = "poster_path";
         final String MOVIE_OVERVIEW = "overview";
         final String VOTE_AVG = "vote_average";
+        final String MOVIE_ID = "id";
 
         /* String array to hold each day's weather String */
         ArrayList<Movie> movieList = new ArrayList<>();
@@ -47,10 +48,24 @@ class MovieJsonUtils {
         for (int i = 0; i < movieArray.length(); i++) {
             JSONObject tempObj = (JSONObject) movieArray.get(i);
             Log.v("MovieJsonUtils", tempObj.toString());
-            Movie movie = new Movie(tempObj.getString(MOVIE_TITLE), tempObj.getString(MOVIE_RELEASE), tempObj.getString(POSTER_PATH), tempObj.getString(MOVIE_OVERVIEW), tempObj.getInt(VOTE_AVG));
+            Movie movie = new Movie(tempObj.getString(MOVIE_TITLE),
+                    tempObj.getString(MOVIE_RELEASE),
+                    tempObj.getString(POSTER_PATH),
+                    tempObj.getString(MOVIE_OVERVIEW),
+                    tempObj.getInt(VOTE_AVG),
+                    tempObj.getString(MOVIE_ID));
             movieList.add(movie);
         }
 
         return movieList;
+    }
+
+    public static List<String> getTrailerKeyFromJson(Context context, String trailerJsonStr){
+
+        ArrayList<String> trailerList = new ArrayList<>();
+
+
+
+        return trailerList;
     }
 }

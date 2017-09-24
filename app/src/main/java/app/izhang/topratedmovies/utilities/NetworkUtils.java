@@ -41,11 +41,13 @@ import app.izhang.topratedmovies.BuildConfig;
  */
 public final class NetworkUtils {
 
-    private static final String TOP_RATED_URL = "http://api.themoviedb.org/3/movie/top_rated?api_key=";
-    private static final String MOST_POPULAR_URL = "http://api.themoviedb.org/3/movie/popular?api_key=";
+    private static final String TOP_RATED_URL = "http://api.themoviedb.org/3/movie/top_rated";
+    private static final String MOST_POPULAR_URL = "http://api.themoviedb.org/3/movie/popular";
     private static final String BASE_URL = "http://api.themoviedb.org/3/movie/";
 
-
+    private static final String API_KEY_PARAM = "api_key";
+    private static final String REVIEW_PATH = "reviews";
+    private static final String TRAILER_PATH = "trailers";
     /*
      * NOTE: These values only effect responses from OpenWeatherMap, NOT from the fake weather
      * server. They are simply here to allow us to teach you how to build a URL if you were to use
@@ -55,8 +57,10 @@ public final class NetworkUtils {
 
 
     // Passed int that represents top rated
-    public static final int TOP_RATED = 1;
-    public static final int MOST_POPULAR = 2;
+    public static final int TOP_RATED = 100;
+    public static final int MOST_POPULAR = 200;
+    public static final int TRAILERS = 300;
+    public static final int REVIEWS = 400;
 
 
     /**
@@ -69,11 +73,51 @@ public final class NetworkUtils {
 
         Uri builtUri;
 
-        if(passedCategory == TOP_RATED){
-            builtUri = Uri.parse(TOP_RATED_URL + BuildConfig.MOVIE_DB_KEY);
-        }else{
-            builtUri = Uri.parse(MOST_POPULAR_URL + BuildConfig.MOVIE_DB_KEY);
-            Log.v("BuiltUri", builtUri.toString());
+        switch(passedCategory) {
+            case TOP_RATED:
+                builtUri = Uri.parse(TOP_RATED_URL)
+                        .buildUpon().appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIE_DB_KEY).build();
+                break;
+            case MOST_POPULAR:
+                builtUri = Uri.parse(MOST_POPULAR_URL)
+                        .buildUpon().appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIE_DB_KEY).build();
+                break;
+            default:
+                builtUri = Uri.parse(MOST_POPULAR_URL)
+                        .buildUpon().appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIE_DB_KEY).build();
+        }
+
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static URL buildUrlWithId(int passedCategory, String id){
+        Uri builtUri = null;
+
+        switch(passedCategory) {
+            case REVIEWS:
+                builtUri = Uri.parse(BASE_URL)
+                        .buildUpon()
+                        .appendPath(id)
+                        .appendPath(REVIEW_PATH)
+                        .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIE_DB_KEY)
+                        .build();
+                break;
+            case TRAILERS:
+                builtUri = Uri.parse(BASE_URL)
+                        .buildUpon()
+                        .appendPath(id)
+                        .appendPath(TRAILER_PATH)
+                        .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIE_DB_KEY)
+                        .build();
+                break;
         }
 
         URL url = null;

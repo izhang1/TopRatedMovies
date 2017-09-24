@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.izhang.topratedmovies.data.Movie;
+import app.izhang.topratedmovies.data.Trailer;
 
 /**
  * Created by ivanzhang on 9/9/17.
@@ -60,11 +61,28 @@ class MovieJsonUtils {
         return movieList;
     }
 
-    public static List<String> getTrailerKeyFromJson(Context context, String trailerJsonStr){
+    public static List<Trailer> getTrailerFromJson(String trailerJsonStr) throws JSONException{
 
-        ArrayList<String> trailerList = new ArrayList<>();
+        final String TRAILER_YOUTUBE = "youtube";
 
+        final String TRAILER_NAME = "name";
+        final String TRAILER_SOURCE = "source";
 
+        ArrayList<Trailer> trailerList = new ArrayList<>();
+
+        JSONObject trailerJson = new JSONObject(trailerJsonStr);
+        JSONArray trailierArray = trailerJson.getJSONArray(TRAILER_YOUTUBE);
+
+        for(int i = 0; i < trailierArray.length(); i++){
+            JSONObject tempObj = (JSONObject) trailierArray.get(i);
+            Trailer trailer = new Trailer(tempObj.getString(TRAILER_NAME),
+                    tempObj.getString(TRAILER_SOURCE));
+
+            Log.v("Trailer", "Name: " + trailer.getName());
+            Log.v("Trailer", "Source: " + trailer.getSource());
+
+            trailerList.add(trailer);
+        }
 
         return trailerList;
     }

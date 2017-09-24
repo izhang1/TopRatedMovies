@@ -74,9 +74,9 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintLeft_toLeftOf="@+id/poster_imageview"
             app:layout_constraintTop_toBottomOf="@+id/poster_imageview"
-            android:layout_marginLeft="0dp"
             android:layout_marginRight="16dp"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginEnd="16dp" />
 
         <Button
             android:id="@+id/btn_favorite"
@@ -103,7 +103,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_trailers"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
@@ -111,7 +111,8 @@
             app:layout_constraintLeft_toLeftOf="@+id/tv_trailer_label"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_trailer_label"
-            android:layout_marginLeft="16dp" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp" />
 
         <TextView
             android:id="@+id/tv_review_label"
@@ -121,12 +122,11 @@
             android:text="Reviews"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             app:layout_constraintTop_toBottomOf="@+id/rv_trailers"
-            android:layout_marginLeft="0dp"
             app:layout_constraintLeft_toLeftOf="@+id/tv_trailer_label" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_reviews"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -134,7 +134,9 @@
             app:layout_constraintLeft_toLeftOf="@+id/tv_review_label"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_review_label"
-            app:layout_constraintHorizontal_bias="0.666" />
+            app:layout_constraintHorizontal_bias="0.666"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

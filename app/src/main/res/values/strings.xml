@@ -16,5 +16,7 @@
     <!-- Menu Key -->
     <string name="menu_key">menu_key_loader</string>\
 
+    <!-- Youtube Base URL for Intent -->
+    <string name="yt_base_url">https://www.youtube.com/watch?v=</string>
 
 </resources>

@@ -6,21 +6,37 @@ package app.izhang.topratedmovies;
   - DetailActivity showing additional data from the movie attributes
  */
 
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import app.izhang.topratedmovies.data.Movie;
+import app.izhang.topratedmovies.data.Trailer;
+import app.izhang.topratedmovies.utilities.MovieLoader;
 import app.izhang.topratedmovies.utilities.NetworkUtils;
 import app.izhang.topratedmovies.utilities.PosterPathUtils;
+import app.izhang.topratedmovies.utilities.TrailerLoader;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Trailer>> {
 
     private Movie mMovieData;
+    private ArrayList<Trailer> mTrailerList;
+    private RecyclerView mTrailerRecyclerView;
+    private TrailerViewAdapter mTrailerViewAdapter;
+
+
+    private final static int TRAILER_LOADER_ID = 1002;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +49,14 @@ public class DetailActivity extends AppCompatActivity {
             mMovieData = receivedData.getParcelable(getString(R.string.key_movie_object));
         }
 
-
-        Log.v("TestingBuildURL", NetworkUtils.buildUrlWithId(NetworkUtils.TRAILERS, mMovieData.getId()).toString());
-
         setTitle("Movie Details");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         showUI();
+
+        // Setup Loader to pull in data
+        getLoaderManager().initLoader(TRAILER_LOADER_ID, null, this);
+
     }
 
 
@@ -61,5 +78,38 @@ public class DetailActivity extends AppCompatActivity {
         mVoteAverageTV.setText(getString(R.string.vote_average_label) + mMovieData.getVoteAverage());
         mOverviewTV.setText(getString(R.string.overview_label) + mMovieData.getOverview());
         mReleaseDateTV.setText(getString(R.string.overview_label) + mMovieData.getRelease_date());
+
+        mTrailerRecyclerView = (RecyclerView) findViewById(R.id.rv_trailers);
+        mTrailerViewAdapter = new TrailerViewAdapter();
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mTrailerRecyclerView.setLayoutManager(layoutManager);
+        mTrailerRecyclerView.setAdapter(mTrailerViewAdapter);
+
+    }
+
+    private void populateTrailerDate(){
+        mTrailerViewAdapter.setData(mTrailerList);
+        mTrailerViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public Loader<List<Trailer>> onCreateLoader(int id, Bundle args) {
+         /* Checks to see if a value was passed in and passes that along to the loader method */
+        TrailerLoader trailerloader = new TrailerLoader(getApplicationContext(), NetworkUtils.TRAILERS, mMovieData.getId());
+        return trailerloader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Trailer>> loader, List<Trailer> data) {
+        mTrailerList = (ArrayList) data;
+        populateTrailerDate();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Trailer>> loader) {
+        if(mTrailerList == null){
+            getLoaderManager().initLoader(TRAILER_LOADER_ID, null, this);
+        }
     }
 }

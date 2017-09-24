@@ -1,5 +1,7 @@
 package app.izhang.topratedmovies.utilities;
 
+import android.net.Uri;
+
 /**
  * Created by ivanzhang on 9/9/17.
  * utilities
@@ -11,6 +13,7 @@ package app.izhang.topratedmovies.utilities;
 public class PosterPathUtils {
 
     private static String BASE_URL = "http://image.tmdb.org/t/p/";
+    private static String YT_BASE_URL = "https://www.youtube.com/watch?v=";
 
     // Different Size Params
     private static String SIZE_W92 = "w92";
@@ -33,4 +36,5 @@ public class PosterPathUtils {
         // Defaulting size to W500
         return (BASE_URL + SIZE_W500 + "/" + path);
     }
+
 }

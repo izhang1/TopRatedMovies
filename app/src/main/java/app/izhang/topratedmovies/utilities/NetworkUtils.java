@@ -73,6 +73,7 @@ public final class NetworkUtils {
             builtUri = Uri.parse(TOP_RATED_URL + BuildConfig.MOVIE_DB_KEY);
         }else{
             builtUri = Uri.parse(MOST_POPULAR_URL + BuildConfig.MOVIE_DB_KEY);
+            Log.v("BuiltUri", builtUri.toString());
         }
 
         URL url = null;

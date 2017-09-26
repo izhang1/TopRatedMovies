@@ -91,4 +91,29 @@ class MovieJsonUtils {
 
         return trailerList;
     }
+
+    public static List<String> getReviewsFromJSON(String trailerJsonStr) throws JSONException{
+
+        /* ID to gather the youtube list */
+        final String REVIEW_RESULTS = "results";
+
+        /* Attributes of the trailer that are needed to display and setup the YouTube intent */
+        final String REVIEW_TEXT = "content";
+
+        ArrayList<String> reviewList = new ArrayList<>();
+
+        JSONObject reviewJson = new JSONObject(trailerJsonStr);
+        JSONArray reviewArray = reviewJson.getJSONArray(REVIEW_RESULTS);
+
+        /* Looping through to parse the JSON data and saving that information into a new trailer object */
+        for(int i = 0; i < reviewArray.length(); i++){
+            JSONObject tempObj = (JSONObject) reviewArray.get(i);
+            String review = tempObj.getString(REVIEW_TEXT);
+            //review = review.replaceAll(System.getProperty("line.separator"), "");
+            reviewList.add(review);
+        }
+
+        return reviewList;
+    }
+
 }

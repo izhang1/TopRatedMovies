@@ -26,17 +26,67 @@ import app.izhang.topratedmovies.data.Trailer;
 import app.izhang.topratedmovies.utilities.MovieLoader;
 import app.izhang.topratedmovies.utilities.NetworkUtils;
 import app.izhang.topratedmovies.utilities.PosterPathUtils;
+import app.izhang.topratedmovies.utilities.ReviewLoader;
 import app.izhang.topratedmovies.utilities.TrailerLoader;
 
-public class DetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Trailer>> {
+public class DetailActivity extends AppCompatActivity{
 
     private Movie mMovieData;
+
     private ArrayList<Trailer> mTrailerList;
     private RecyclerView mTrailerRecyclerView;
     private TrailerViewAdapter mTrailerViewAdapter;
 
+    private ArrayList<String> mReviewList;
+    private ReviewViewAdapter mReviewViewAdapter;
+    private RecyclerView mReviewRecyclerView;
 
-    private final static int TRAILER_LOADER_ID = 1002;
+
+    private final static int TRAILER_LOADER_ID = 1000;
+    private final static int REVIEW_LOADER_ID = 2000;
+
+
+    private LoaderManager.LoaderCallbacks<List<Trailer>> trailerLoaderListener = new LoaderManager.LoaderCallbacks<List<Trailer>>() {
+        @Override
+        public Loader<List<Trailer>> onCreateLoader(int id, Bundle args) {
+            TrailerLoader trailerloader = new TrailerLoader(getApplicationContext(), NetworkUtils.TRAILERS, mMovieData.getId());
+            return trailerloader;
+        }
+
+        @Override
+        public void onLoadFinished(Loader<List<Trailer>> loader, List<Trailer> data) {
+            mTrailerList = (ArrayList) data;
+            populateTrailerData();
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<Trailer>> loader) {
+            if(mTrailerList == null){
+                getLoaderManager().initLoader(TRAILER_LOADER_ID, null, this);
+            }
+        }
+    };
+
+    private LoaderManager.LoaderCallbacks<List<String>> reviewLoaderListener = new LoaderManager.LoaderCallbacks<List<String>>() {
+        @Override
+        public Loader<List<String>> onCreateLoader(int id, Bundle args) {
+            ReviewLoader reviewLoader = new ReviewLoader(getApplicationContext(), NetworkUtils.REVIEWS, mMovieData.getId());
+            return reviewLoader;
+        }
+
+        @Override
+        public void onLoadFinished(Loader<List<String>> loader, List<String> data) {
+            mReviewList = (ArrayList) data;
+            populateReviewData();
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<String>> loader) {
+            if(mReviewList == null){
+                getLoaderManager().initLoader(REVIEW_LOADER_ID, null, this);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +105,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         showUI();
 
         // Setup Loader to pull in data
-        getLoaderManager().initLoader(TRAILER_LOADER_ID, null, this);
+        getLoaderManager().initLoader(TRAILER_LOADER_ID, null, trailerLoaderListener);
+
+        getLoaderManager().initLoader(REVIEW_LOADER_ID, null, reviewLoaderListener);
 
     }
 
@@ -82,37 +134,33 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         mTrailerRecyclerView = (RecyclerView) findViewById(R.id.rv_trailers);
         mTrailerViewAdapter = new TrailerViewAdapter();
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mTrailerRecyclerView.setLayoutManager(layoutManager);
+        LinearLayoutManager trailerLayoutMgr = new LinearLayoutManager(this);
+        mTrailerRecyclerView.setLayoutManager(trailerLayoutMgr);
         mTrailerRecyclerView.setAdapter(mTrailerViewAdapter);
+
+        LinearLayoutManager reviewLayoutMgr = new LinearLayoutManager(this);
+        mReviewRecyclerView = (RecyclerView) findViewById(R.id.rv_reviews);
+        mReviewViewAdapter = new ReviewViewAdapter();
+
+        mReviewRecyclerView.setLayoutManager(reviewLayoutMgr);
+        mReviewRecyclerView.setAdapter(mReviewViewAdapter);
 
     }
 
     /**
      * Populates the movie data, called once the loader is finished or if the activity lifecycle resets
      */
-    private void populateTrailerDate(){
+    private void populateTrailerData(){
         mTrailerViewAdapter.setData(mTrailerList);
         mTrailerViewAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public Loader<List<Trailer>> onCreateLoader(int id, Bundle args) {
-         /* Checks to see if a value was passed in and passes that along to the loader method */
-        TrailerLoader trailerloader = new TrailerLoader(getApplicationContext(), NetworkUtils.TRAILERS, mMovieData.getId());
-        return trailerloader;
+    /**
+     * Populates the movie data, called once the loader is finished or if the activity lifecycle resets
+     */
+    private void populateReviewData(){
+        mReviewViewAdapter.setData(mReviewList);
+        mTrailerViewAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onLoadFinished(Loader<List<Trailer>> loader, List<Trailer> data) {
-        mTrailerList = (ArrayList) data;
-        populateTrailerDate();
-    }
-
-    @Override
-    public void onLoaderReset(Loader<List<Trailer>> loader) {
-        if(mTrailerList == null){
-            getLoaderManager().initLoader(TRAILER_LOADER_ID, null, this);
-        }
-    }
 }

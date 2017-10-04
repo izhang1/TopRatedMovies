@@ -23,4 +23,11 @@
             android:parentActivityName=".HomeActivity"></activity>
     </application>
 
+
+    <!-- MovieContentProvider -->
+    <provider
+        android:name="app.izhang.topratedmovies.data.MovieContentProvider"
+        android:authorities="app.izhang.topratedmovies"
+        android:exported="false"/>
+
 </manifest>

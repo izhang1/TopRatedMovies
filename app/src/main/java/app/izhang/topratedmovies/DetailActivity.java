@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -161,6 +162,13 @@ public class DetailActivity extends AppCompatActivity{
     private void populateReviewData(){
         mReviewViewAdapter.setData(mReviewList);
         mTrailerViewAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     *  OnClick method when the favorite button is tapped
+     */
+    public void onFavoriteButton(View view){
+        Log.v("Favorite Button", "Clicked");
     }
 
 }

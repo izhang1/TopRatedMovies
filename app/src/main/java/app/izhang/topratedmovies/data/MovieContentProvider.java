@@ -1,12 +1,15 @@
 package app.izhang.topratedmovies.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 /**
  * Created by ivanzhang on 10/3/17.
@@ -64,6 +67,27 @@ public class MovieContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+
+        SQLiteDatabase db = mMovieDbHelper.getReadableDatabase();
+        int match = sUriMatcher.match(uri);
+        switch(match){
+            case MOVIE:
+                Log.v("URIMatcher", "Matched to a regular movie");
+                return db.query(MovieContract.MovieEntry.TABLE_NAME, projection, selection, selectionArgs, sortOrder, null, null);
+
+            case MOVIE_ID:
+                String movieId = uri.getPathSegments().get(1);
+
+                return db.query(MovieContract.MovieEntry.TABLE_NAME,
+                        projection,
+                        "movie_id=?",
+                        new String[]{movieId},
+                        null,
+                        null,
+                        sortOrder);
+
+        }
+
         return null;
     }
 
@@ -83,7 +107,22 @@ public class MovieContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+        SQLiteDatabase db = mMovieDbHelper.getWritableDatabase();
+        Uri returnUri; // URI to be returned
+
+        long insertReturnId = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, values);
+        if(insertReturnId > 0){
+            // This means that there's value inserted
+            returnUri = ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, insertReturnId);
+            Log.v("Insert SQL", "Returned an ID");
+        }else{
+            return null;
+        }
+
+        // Notify the resolver if the uri has been changed, and return the newly inserted URI
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        return returnUri;
     }
 
     /**
@@ -96,7 +135,22 @@ public class MovieContentProvider extends ContentProvider {
      */
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+
+        SQLiteDatabase db = mMovieDbHelper.getReadableDatabase();
+        int match = sUriMatcher.match(uri);
+
+        int value = 0;
+
+        switch(match){
+            case MOVIE:
+                return 0;
+            case MOVIE_ID:
+                String movieId = uri.getPathSegments().get(1);
+                value = db.delete(MovieContract.MovieEntry.TABLE_NAME, "movie_id=?", new String[]{movieId});
+        }
+
+        return value;
+
     }
 
 

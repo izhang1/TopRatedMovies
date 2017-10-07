@@ -11,12 +11,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MovieDbHelper extends SQLiteOpenHelper {
 
     // Variable represents the name of the saved database file
-    private static final String DB_NAME = "favorite_movie.db";
+    public static final String DB_NAME = "favorite_movie.db";
 
     // Variable represents the current version of this database
     private static final int DB_VERSION = 1;
 
-    public MovieDbHelper(Context context) {
+    MovieDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 

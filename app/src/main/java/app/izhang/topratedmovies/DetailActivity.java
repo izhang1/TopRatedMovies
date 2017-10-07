@@ -7,13 +7,19 @@ package app.izhang.topratedmovies;
  */
 
 import android.app.LoaderManager;
+import android.content.ContentProvider;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Loader;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.izhang.topratedmovies.data.Movie;
+import app.izhang.topratedmovies.data.MovieContentProvider;
+import app.izhang.topratedmovies.data.MovieContract;
 import app.izhang.topratedmovies.data.Trailer;
 import app.izhang.topratedmovies.utilities.MovieLoader;
 import app.izhang.topratedmovies.utilities.NetworkUtils;
@@ -33,6 +41,7 @@ import app.izhang.topratedmovies.utilities.TrailerLoader;
 public class DetailActivity extends AppCompatActivity{
 
     private Movie mMovieData;
+    private ContentResolver mContentResolver;
 
     private ArrayList<Trailer> mTrailerList;
     private RecyclerView mTrailerRecyclerView;
@@ -42,6 +51,7 @@ public class DetailActivity extends AppCompatActivity{
     private ReviewViewAdapter mReviewViewAdapter;
     private RecyclerView mReviewRecyclerView;
 
+    private Button mFavoriteButton;
 
     private final static int TRAILER_LOADER_ID = 1000;
     private final static int REVIEW_LOADER_ID = 2000;
@@ -105,11 +115,9 @@ public class DetailActivity extends AppCompatActivity{
 
         showUI();
 
-        // Setup Loader to pull in data
+        // Setup Loader to pull in data, both trailers and reviews
         getLoaderManager().initLoader(TRAILER_LOADER_ID, null, trailerLoaderListener);
-
         getLoaderManager().initLoader(REVIEW_LOADER_ID, null, reviewLoaderListener);
-
     }
 
 
@@ -118,6 +126,13 @@ public class DetailActivity extends AppCompatActivity{
      *
      */
     private void showUI(){
+
+        mFavoriteButton = (Button) findViewById(R.id.btn_favorite);
+        if(currentMovieIsFavorite() == true){
+            // Set the text to unfavorite. Default is favorite
+            mFavoriteButton.setText(getString(R.string.unfavorite_label));
+        }
+
         ImageView mPosterView = (ImageView) findViewById(R.id.poster_imageview);
         String posterPath = PosterPathUtils.buildPosterURL(mMovieData.getPosterPath(), "size");
         Picasso.with(this).load(posterPath).into(mPosterView);
@@ -149,6 +164,32 @@ public class DetailActivity extends AppCompatActivity{
     }
 
     /**
+     * Queries the database and determine if this specific movie is available or not.
+     *
+     * @return
+     */
+    private boolean currentMovieIsFavorite(){
+        mContentResolver = this.getContentResolver();
+
+        Uri.Builder builder = MovieContract.MovieEntry.CONTENT_URI
+                .buildUpon()
+                .appendPath(mMovieData.getId());
+
+        Cursor queriedMovie = mContentResolver.query(builder.build(), null, null, null, null, null);
+
+        // Return false if the content resolve does not return anything
+        int count = queriedMovie.getCount();
+        Log.v("Cursor", "Count: " + count);
+
+        if(count <= 0){
+            return false;
+        }else{
+            return true;
+        }
+
+    }
+
+    /**
      * Populates the movie data, called once the loader is finished or if the activity lifecycle resets
      */
     private void populateTrailerData(){
@@ -165,10 +206,43 @@ public class DetailActivity extends AppCompatActivity{
     }
 
     /**
-     *  OnClick method when the favorite button is tapped
+     *  OnClick - Deletes or Inserts the movie and changes the UI accordingly
+     *
+     * @param view
      */
     public void onFavoriteButton(View view){
-        Log.v("Favorite Button", "Clicked");
+
+        Uri.Builder builder = MovieContract.MovieEntry.CONTENT_URI
+                .buildUpon()
+                .appendPath(mMovieData.getId());
+
+        if(mFavoriteButton.getText().equals(getString(R.string.favorite_label))) {
+            // Favorite the movie. Put it into the databse.
+            ContentValues values = new ContentValues();
+            values.put(MovieContract.MovieEntry.COLUMN_TITLE, mMovieData.getTitle());
+            values.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, mMovieData.getRelease_date());
+            values.put(MovieContract.MovieEntry.COLUMN_POSTER_PATH, mMovieData.getPosterPath());
+            values.put(MovieContract.MovieEntry.COLUMN_OVERVIEW, mMovieData.getOverview());
+            values.put(MovieContract.MovieEntry.COLUMN_VOTE_AVERAGE, mMovieData.getVoteAverage());
+            values.put(MovieContract.MovieEntry.COLUMN_ID, mMovieData.getId());
+
+            // mContentResolver.query()
+            mContentResolver.insert(builder.build(), values);
+
+            // Change the the text on the button to "unfavorite"
+            mFavoriteButton.setText(getString(R.string.unfavorite_label));
+
+        }else{
+            // Unfavorite the movie. Remove it from the database.
+            mContentResolver.delete(builder.build(), null, null);
+
+            // Change the the text on the button to "favorite"
+            mFavoriteButton.setText(getString(R.string.favorite_label));
+
+        }
+
+
+
     }
 
 }

@@ -10,7 +10,7 @@ import android.provider.BaseColumns;
 public class MovieContract {
 
     // The authority, which is how your code knows which Content Provider to access
-    public static final String AUTHORITY = "app.izhang.topreatedmovies";
+    public static final String AUTHORITY = "app.izhang.topratedmovies";
 
     // The base content URI = "content://" + <authority>
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
@@ -38,30 +38,6 @@ public class MovieContract {
         public static final String COLUMN_OVERVIEW = "overview";
         public static final String COLUMN_VOTE_AVERAGE = "vote_average";
         public static final String COLUMN_ID = "movie_id";
-
-
-        /*
-        The above table structure looks something like the sample table below.
-        With the name of the table and columns on top, and potential contents in rows
-
-        Note: Because this implements BaseColumns, the _id column is generated automatically
-
-        tasks
-         - - - - - - - - - - - - - - - - - - - - - -
-        | _id  |    description     |    priority   |
-         - - - - - - - - - - - - - - - - - - - - - -
-        |  1   |  Complete lesson   |       1       |
-         - - - - - - - - - - - - - - - - - - - - - -
-        |  2   |    Go shopping     |       3       |
-         - - - - - - - - - - - - - - - - - - - - - -
-        .
-        .
-        .
-         - - - - - - - - - - - - - - - - - - - - - -
-        | 43   |   Learn guitar     |       2       |
-         - - - - - - - - - - - - - - - - - - - - - -
-
-         */
 
     }
 

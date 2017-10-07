@@ -19,4 +19,8 @@
     <!-- Youtube Base URL for Intent -->
     <string name="yt_base_url">https://www.youtube.com/watch?v=</string>
 
+    <!-- Favorite/Unfavorite Text for Detail View button -->
+    <string name="favorite_label">Favorite</string>
+    <string name="unfavorite_label">Unfavorite</string>
+
 </resources>

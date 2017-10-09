@@ -80,20 +80,17 @@ public class HomeActivity extends AppCompatActivity{
         switch (mSavedSort) {
 
             case R.id.action_favorite:
-                Log.v("Loader", "Restarted favorites loader");
                 getLoaderManager().restartLoader(FAV_DB_LOADER_ID, null, favoriteLoaderManager);
                 changeTitle(getString(R.string.favorite_label));
                 break;
 
             case R.id.action_top_rated:
-                Log.v("Loader", "Restarted top rated loader");
                 bundle.putInt(getString(R.string.menu_key), NetworkUtils.TOP_RATED);
                 getLoaderManager().restartLoader(HTTP_LOADER_ID, bundle, httpSortLoaderManager);
                 changeTitle(getString(R.string.top_rated_label));
                 break;
 
             default:
-                Log.v("Loader", "Restarted default loader");
                 bundle.putInt(getString(R.string.menu_key), NetworkUtils.MOST_POPULAR);
                 getLoaderManager().restartLoader(HTTP_LOADER_ID, bundle, httpSortLoaderManager);
                 changeTitle(getString(R.string.most_popular_label));
@@ -153,7 +150,6 @@ public class HomeActivity extends AppCompatActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.home_menu, menu);
-        Log.v("Load Movies", "Load movies from saved instance called");
 
         loadMoviesFromSavedInstance();
 
@@ -162,9 +158,6 @@ public class HomeActivity extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        Log.v("On Item selected", "Item Selected");
-
         int itemId = item.getItemId();
 
         mSavedSort = itemId;
@@ -254,7 +247,6 @@ public class HomeActivity extends AppCompatActivity{
 
         @Override
         public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
-            Log.v("Loader Finished", "Fav Loader");
 
             /* Shows recycler view and hides the data*/
             mProgressBar.setVisibility(View.INVISIBLE);
@@ -266,7 +258,6 @@ public class HomeActivity extends AppCompatActivity{
 
         @Override
         public void onLoaderReset(Loader<List<Movie>> loader) {
-            Log.v("Loader Reset", "Fav Loader");
             if(mFavData != null) {
                 mData = mFavData;
                 populateData();
@@ -279,8 +270,6 @@ public class HomeActivity extends AppCompatActivity{
     private LoaderManager.LoaderCallbacks<List<Movie>> httpSortLoaderManager = new LoaderManager.LoaderCallbacks<List<Movie>>() {
         @Override
         public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
-
-            Log.v("HTTP sort", "Loader Created");
 
             /* Shows progress bar and hides the recycler view */
             mProgressBar.setVisibility(View.VISIBLE);
@@ -296,8 +285,6 @@ public class HomeActivity extends AppCompatActivity{
         @Override
         public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
 
-            Log.v("HTTP sort", "Loader Finished");
-
             /* Shows recycler view and hides the data*/
             mProgressBar.setVisibility(View.INVISIBLE);
             mMovieRecyclerView.setVisibility(View.VISIBLE);
@@ -309,7 +296,6 @@ public class HomeActivity extends AppCompatActivity{
         @Override
         public void onLoaderReset(Loader<List<Movie>> loader) {
             /* Checks to see if data is already available, if not inits the loader */
-            Log.v("HTTP sort", "Loader Reset");
 
             if(mData != null) populateData();
             else getLoaderManager().restartLoader(HTTP_LOADER_ID, null, this);

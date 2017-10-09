@@ -179,7 +179,6 @@ public class DetailActivity extends AppCompatActivity{
 
         // Return false if the content resolve does not return anything
         int count = queriedMovie.getCount();
-        Log.v("Cursor", "Count: " + count);
 
         if(count <= 0){
             return false;

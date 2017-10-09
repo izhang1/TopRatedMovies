@@ -72,7 +72,6 @@ public class MovieContentProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
         switch(match){
             case MOVIE:
-                Log.v("URIMatcher", "Matched to a regular movie");
                 return db.query(MovieContract.MovieEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -120,7 +119,6 @@ public class MovieContentProvider extends ContentProvider {
         if(insertReturnId > 0){
             // This means that there's value inserted
             returnUri = ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, insertReturnId);
-            Log.v("Insert SQL", "Returned an ID");
         }else{
             return null;
         }

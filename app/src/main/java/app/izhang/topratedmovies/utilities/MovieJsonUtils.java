@@ -49,7 +49,7 @@ class MovieJsonUtils {
         /* Looping through the array and saving the movie values into a list of movies passed back to the calling method. */
         for (int i = 0; i < movieArray.length(); i++) {
             JSONObject tempObj = (JSONObject) movieArray.get(i);
-            Log.v("MovieJsonUtils", tempObj.toString());
+            //Log.v("MovieJsonUtils", tempObj.toString());
             Movie movie = new Movie(tempObj.getString(MOVIE_TITLE),
                     tempObj.getString(MOVIE_RELEASE),
                     tempObj.getString(POSTER_PATH),
@@ -83,8 +83,8 @@ class MovieJsonUtils {
             Trailer trailer = new Trailer(tempObj.getString(TRAILER_NAME),
                     tempObj.getString(TRAILER_SOURCE));
 
-            Log.v("Trailer", "Name: " + trailer.getName());
-            Log.v("Trailer", "Source: " + trailer.getSource());
+            //Log.v("Trailer", "Name: " + trailer.getName());
+            //Log.v("Trailer", "Source: " + trailer.getSource());
 
             trailerList.add(trailer);
         }

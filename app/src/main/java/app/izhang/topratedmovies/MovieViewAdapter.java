@@ -53,7 +53,6 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
 
     public void setData(ArrayList<Movie> data){
         this.movieData = data;
-        notifyDataSetChanged();
     }
 
 

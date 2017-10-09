@@ -73,7 +73,13 @@ public class MovieContentProvider extends ContentProvider {
         switch(match){
             case MOVIE:
                 Log.v("URIMatcher", "Matched to a regular movie");
-                return db.query(MovieContract.MovieEntry.TABLE_NAME, projection, selection, selectionArgs, sortOrder, null, null);
+                return db.query(MovieContract.MovieEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
 
             case MOVIE_ID:
                 String movieId = uri.getPathSegments().get(1);

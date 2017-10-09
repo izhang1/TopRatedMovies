@@ -105,4 +105,13 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Movie: Title: " + title + "\n"
+                + "Release Date: " + releaseDate + "\n"
+                + "Poster Path: " + posterPath + "\n"
+                + "Overview: " + overview + "\n"
+                + "Movie id: " + id;
+    }
 }

@@ -55,45 +55,55 @@ public class HomeActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.v("OnCreate", "Favorite Movie Issue");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        if(mMovieRecyclerView == null) showUI();
 
         // Check if the bundle is null or if there's a preexisting instance we need to reinit the activity with
         if(savedInstanceState != null){
             mSavedSort = savedInstanceState.getInt(SELECTED_SORT);
+            loadMovies(mSavedSort);
         }
 
-        if(mMovieRecyclerView == null) showUI();
-
-        loadMoviesFromSavedInstance();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(SELECTED_SORT, mSavedSort);
         super.onSaveInstanceState(outState);
+
+        outState.putInt(SELECTED_SORT, mSavedSort);
     }
 
-    private void loadMoviesFromSavedInstance(){
+    private void loadMovies(int sort){
         Bundle bundle = new Bundle();
 
-        switch (mSavedSort) {
+        Log.v("Load Movies", "Favorite Movie Issue");
 
+        // Checks the saved instance to see if a sort was previously defined
+        switch (sort) {
             case R.id.action_favorite:
                 getLoaderManager().restartLoader(FAV_DB_LOADER_ID, null, favoriteLoaderManager);
                 changeTitle(getString(R.string.favorite_label));
-                break;
+                getLoaderManager().destroyLoader(HTTP_LOADER_ID);
 
+                break;
             case R.id.action_top_rated:
                 bundle.putInt(getString(R.string.menu_key), NetworkUtils.TOP_RATED);
                 getLoaderManager().restartLoader(HTTP_LOADER_ID, bundle, httpSortLoaderManager);
                 changeTitle(getString(R.string.top_rated_label));
-                break;
+                getLoaderManager().destroyLoader(FAV_DB_LOADER_ID);
 
-            default:
+                break;
+            case R.id.action_most_popular:
                 bundle.putInt(getString(R.string.menu_key), NetworkUtils.MOST_POPULAR);
                 getLoaderManager().restartLoader(HTTP_LOADER_ID, bundle, httpSortLoaderManager);
                 changeTitle(getString(R.string.most_popular_label));
+                getLoaderManager().destroyLoader(FAV_DB_LOADER_ID);
+
+                break;
         }
     }
 
@@ -102,6 +112,7 @@ public class HomeActivity extends AppCompatActivity{
      *
      */
     private void showUI(){
+        Log.v("Show UI", "Favorite Movie Issue");
 
         mProgressBar = (ProgressBar) this.findViewById(R.id.loading_progress_bar);
         mMovieRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
@@ -113,6 +124,9 @@ public class HomeActivity extends AppCompatActivity{
         mMovieRecyclerView.setLayoutManager(gridLayoutManager);
 
         mMovieRecyclerView.setAdapter(mMovieAdapter);
+
+        // Initial loading of movies
+        loadMovies(R.id.action_top_rated);
     }
 
     private void changeTitle(String currentSort){
@@ -124,10 +138,23 @@ public class HomeActivity extends AppCompatActivity{
      *
      */
     private void populateData(){
+        Log.v("Populate Data", "Favorite Movie Issue");
+
         mMovieAdapter.setData((ArrayList<Movie>) mData);
         mMovieAdapter.notifyDataSetChanged();
-
     }
+
+    /**
+     * Called after Loader finishes. Populates the data into the recycler view.
+     *
+     */
+    private void populateFavData(){
+        Log.v("Populate Fav Data", "Favorite Movie Issue");
+
+        mMovieAdapter.setData((ArrayList<Movie>) mFavData);
+        mMovieAdapter.notifyDataSetChanged();
+    }
+
 
     /**
      * helper method to determine the orientation of the phone and return the grid length layout
@@ -151,8 +178,6 @@ public class HomeActivity extends AppCompatActivity{
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.home_menu, menu);
 
-        loadMoviesFromSavedInstance();
-
         return true;
     }
 
@@ -160,8 +185,10 @@ public class HomeActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
 
+        // Saves the sort referencing the specific menuitem
         mSavedSort = itemId;
-        loadMoviesFromSavedInstance();
+
+        loadMovies(itemId);
 
         return true;
     }
@@ -180,13 +207,7 @@ public class HomeActivity extends AppCompatActivity{
                 // onStartLoading() is called when a loader first starts loading data
                 @Override
                 protected void onStartLoading() {
-                    if (mFavData != null) {
-                        // Delivers any previously loaded data immediately
-                        deliverResult(mFavData);
-                    } else {
-                        // Force a new load
-                        forceLoad();
-                    }
+                    forceLoad();
                 }
 
                 // loadInBackground() performs asynchronous loading of data
@@ -252,24 +273,22 @@ public class HomeActivity extends AppCompatActivity{
             mProgressBar.setVisibility(View.INVISIBLE);
             mMovieRecyclerView.setVisibility(View.VISIBLE);
 
-            mData = data;
-            populateData();
+            Log.v("LoadFinished", "Favorite Movie Issue");
+            mFavData = data;
+            populateFavData();
         }
 
         @Override
         public void onLoaderReset(Loader<List<Movie>> loader) {
-            if(mFavData != null) {
-                mData = mFavData;
-                populateData();
-            }else{
-                getLoaderManager().restartLoader(FAV_DB_LOADER_ID, null, favoriteLoaderManager);
-            }
+            getLoaderManager().restartLoader(FAV_DB_LOADER_ID, null, favoriteLoaderManager);
         }
     };
 
+    // Loader to call the HTTP requests and retrieve the top rated or popular movies
     private LoaderManager.LoaderCallbacks<List<Movie>> httpSortLoaderManager = new LoaderManager.LoaderCallbacks<List<Movie>>() {
         @Override
         public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
+            Log.v("HTTP On Create Loader", "Favorite Movie Issue");
 
             /* Shows progress bar and hides the recycler view */
             mProgressBar.setVisibility(View.VISIBLE);
@@ -284,6 +303,7 @@ public class HomeActivity extends AppCompatActivity{
 
         @Override
         public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
+            Log.v("HTTP On Finished Loader", "Favorite Movie Issue");
 
             /* Shows recycler view and hides the data*/
             mProgressBar.setVisibility(View.INVISIBLE);
@@ -296,6 +316,7 @@ public class HomeActivity extends AppCompatActivity{
         @Override
         public void onLoaderReset(Loader<List<Movie>> loader) {
             /* Checks to see if data is already available, if not inits the loader */
+            Log.v("HTTP On Reset Loader", "Favorite Movie Issue");
 
             if(mData != null) populateData();
             else getLoaderManager().restartLoader(HTTP_LOADER_ID, null, this);

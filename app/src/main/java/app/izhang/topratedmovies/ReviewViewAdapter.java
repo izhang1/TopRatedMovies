@@ -11,6 +11,9 @@ import java.util.ArrayList;
 
 /**
  * Created by ivanzhang on 9/25/17.
+ * - ReviewViewAdapter class
+ * - Setup the RecyclerView with the passed in data and lays them out according to our list item
+ * - This view is shown on the DetailActivity.class
  */
 
 public class ReviewViewAdapter extends RecyclerView.Adapter<ReviewViewAdapter.ReviewViewHolder>{

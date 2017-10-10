@@ -2,6 +2,8 @@ package app.izhang.topratedmovies.data;
 
 /**
  * Created by ivanzhang on 9/24/17.
+ * data
+ * - model for the trailer data that will be pulled in and used to setup links out to the trailer on YouTube
  */
 
 public class Trailer {

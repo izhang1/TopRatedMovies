@@ -25,6 +25,13 @@ import app.izhang.topratedmovies.data.Trailer;
 
 class MovieJsonUtils {
 
+    /**
+     *  Parses the JSON for Movie data, saves the data and returns this as a list
+     * @param context
+     * @param movieJsonStr
+     * @return
+     * @throws JSONException
+     */
     public static List<Movie> getMovieListFromJson(Context context, String movieJsonStr)
             throws JSONException {
 
@@ -63,6 +70,12 @@ class MovieJsonUtils {
     }
 
 
+    /**
+     *  Parses the JSON for Trailer data, saves the data and returns this as a list
+     * @param trailerJsonStr
+     * @return
+     * @throws JSONException
+     */
     public static List<Trailer> getTrailerFromJson(String trailerJsonStr) throws JSONException{
 
         /* ID to gather the youtube list */
@@ -92,6 +105,12 @@ class MovieJsonUtils {
         return trailerList;
     }
 
+    /**
+     *  Parses the JSON for String data representing the review, saves the data and returns this as a list
+     * @param trailerJsonStr
+     * @return
+     * @throws JSONException
+     */
     public static List<String> getReviewsFromJSON(String trailerJsonStr) throws JSONException{
 
         /* ID to gather the youtube list */

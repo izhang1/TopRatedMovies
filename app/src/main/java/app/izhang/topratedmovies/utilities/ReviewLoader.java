@@ -11,6 +11,9 @@ import java.util.List;
 
 /**
  * Created by ivanzhang on 9/25/17.
+ * - ReviewLoader class
+ * - extends AsyncTaskLoader and helps with querying the network request on a separate thread.
+ * - calls the appropriate HTTP requests, parses the JSON data and returns a list of Trailers back to the main thread
  */
 
 public class ReviewLoader extends AsyncTaskLoader<List<String>>{

@@ -21,7 +21,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Called when the tasks database is created for the first time.
+     * Called when the movie database is created for the first time.
      */
     @Override
     public void onCreate(SQLiteDatabase db) {

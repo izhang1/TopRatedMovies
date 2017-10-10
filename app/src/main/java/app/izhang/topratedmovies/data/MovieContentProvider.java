@@ -67,11 +67,13 @@ public class MovieContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-
         SQLiteDatabase db = mMovieDbHelper.getReadableDatabase();
+
+        // Match the URI to a specified movie or the whole database
         int match = sUriMatcher.match(uri);
         switch(match){
             case MOVIE:
+                // Query the whole DB
                 return db.query(MovieContract.MovieEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -81,8 +83,10 @@ public class MovieContentProvider extends ContentProvider {
                         sortOrder);
 
             case MOVIE_ID:
+                // Get the specified ID passed in from the URI
                 String movieId = uri.getPathSegments().get(1);
 
+                // Query with the selection and selection args for this specific movie id
                 return db.query(MovieContract.MovieEntry.TABLE_NAME,
                         projection,
                         "movie_id=?",
@@ -112,6 +116,7 @@ public class MovieContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
+
         SQLiteDatabase db = mMovieDbHelper.getWritableDatabase();
         Uri returnUri; // URI to be returned
 
@@ -143,23 +148,26 @@ public class MovieContentProvider extends ContentProvider {
         SQLiteDatabase db = mMovieDbHelper.getReadableDatabase();
         int match = sUriMatcher.match(uri);
 
-        int value = 0;
+        int deleteRetValue = 0;
 
+        // Currently only matching a specific movie id
         switch(match){
             case MOVIE:
                 return 0;
             case MOVIE_ID:
+                // Get the specified ID passed in from the URI
                 String movieId = uri.getPathSegments().get(1);
-                value = db.delete(MovieContract.MovieEntry.TABLE_NAME, "movie_id=?", new String[]{movieId});
+                // Call delete and return the returned value, rows deleted, back to the calling method
+                deleteRetValue = db.delete(MovieContract.MovieEntry.TABLE_NAME, "movie_id=?", new String[]{movieId});
         }
 
-        return value;
+        return deleteRetValue;
 
     }
 
 
     /**
-     * Movie app will likely not use this call.
+     * Movie app will likely not use this call. No items are being updated at this time.
      * @param uri
      * @param values
      * @param selection

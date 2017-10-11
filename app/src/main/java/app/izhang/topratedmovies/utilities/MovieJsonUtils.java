@@ -1,13 +1,11 @@
 package app.izhang.topratedmovies.utilities;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +25,11 @@ class MovieJsonUtils {
 
     /**
      *  Parses the JSON for Movie data, saves the data and returns this as a list
-     * @param context
      * @param movieJsonStr
      * @return
      * @throws JSONException
      */
-    public static List<Movie> getMovieListFromJson(Context context, String movieJsonStr)
+    public static List<Movie> getMovieListFromJson(String movieJsonStr)
             throws JSONException {
 
         /* Results list */

@@ -2,7 +2,6 @@ package app.izhang.topratedmovies.utilities;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.util.Log;
 
 import org.json.JSONException;
 
@@ -45,7 +44,7 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
         try{
             String jsonResponse = NetworkUtils.getResponseFromHttpUrl(queryUrl);
 
-            List<Movie> parsedMovieList = MovieJsonUtils.getMovieListFromJson(mContext, jsonResponse);
+            List<Movie> parsedMovieList = MovieJsonUtils.getMovieListFromJson(jsonResponse);
             return parsedMovieList;
 
         } catch (IOException | JSONException e) {

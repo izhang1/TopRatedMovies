@@ -1,13 +1,12 @@
 package app.izhang.topratedmovies;
 
-/*
+/**
   Created by ivanzhang on 9/8/17.
 
   - DetailActivity showing additional data from the movie attributes
  */
 
 import android.app.LoaderManager;
-import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Loader;
@@ -17,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,10 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.izhang.topratedmovies.data.Movie;
-import app.izhang.topratedmovies.data.MovieContentProvider;
 import app.izhang.topratedmovies.data.MovieContract;
 import app.izhang.topratedmovies.data.Trailer;
-import app.izhang.topratedmovies.utilities.MovieLoader;
 import app.izhang.topratedmovies.utilities.NetworkUtils;
 import app.izhang.topratedmovies.utilities.PosterPathUtils;
 import app.izhang.topratedmovies.utilities.ReviewLoader;
@@ -110,7 +106,10 @@ public class DetailActivity extends AppCompatActivity{
             mMovieData = receivedData.getParcelable(getString(R.string.key_movie_object));
         }
 
-        setTitle("Movie Details");
+        // Set the title for the activity
+        setTitle(R.string.detail_view_title);
+
+        // Allow the activity to go back to the home activity and show the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         showUI();
@@ -134,7 +133,7 @@ public class DetailActivity extends AppCompatActivity{
         }
 
         ImageView mPosterView = (ImageView) findViewById(R.id.poster_imageview);
-        String posterPath = PosterPathUtils.buildPosterURL(mMovieData.getPosterPath(), "size");
+        String posterPath = PosterPathUtils.buildPosterURL(mMovieData.getPosterPath(), "");
         Picasso.with(this).load(posterPath).into(mPosterView);
 
         TextView mVoteAverageTV = (TextView) findViewById(R.id.tv_vote_average);
@@ -142,7 +141,7 @@ public class DetailActivity extends AppCompatActivity{
         TextView mReleaseDateTV = (TextView) findViewById(R.id.tv_release_date);
         TextView mMovieTitleTV = (TextView) findViewById(R.id.tv_movie_title);
 
-        mMovieTitleTV.setText(mMovieData.getTitle() + " ID:" + mMovieData.getId());
+        mMovieTitleTV.setText(mMovieData.getTitle());
         mVoteAverageTV.setText(getString(R.string.vote_average_label) + mMovieData.getVoteAverage());
         mOverviewTV.setText(getString(R.string.overview_label) + mMovieData.getOverview());
         mReleaseDateTV.setText(getString(R.string.overview_label) + mMovieData.getRelease_date());

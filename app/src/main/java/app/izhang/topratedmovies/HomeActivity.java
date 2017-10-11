@@ -1,6 +1,6 @@
 package app.izhang.topratedmovies;
 
-/*
+/**
   Created by ivanzhang on 9/8/17.
 
   - HomeActivity shows the queries data of movie posters and allows users to navigate to them
@@ -29,10 +29,8 @@ import java.util.List;
 
 import app.izhang.topratedmovies.data.Movie;
 import app.izhang.topratedmovies.data.MovieContract;
-import app.izhang.topratedmovies.data.Trailer;
 import app.izhang.topratedmovies.utilities.NetworkUtils;
 import app.izhang.topratedmovies.utilities.MovieLoader;
-import app.izhang.topratedmovies.utilities.TrailerLoader;
 
 
 public class HomeActivity extends AppCompatActivity{
@@ -55,8 +53,6 @@ public class HomeActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v("OnCreate", "Favorite Movie Issue");
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -79,8 +75,6 @@ public class HomeActivity extends AppCompatActivity{
 
     private void loadMovies(int sort){
         Bundle bundle = new Bundle();
-
-        Log.v("Load Movies", "Favorite Movie Issue");
 
         // Checks the saved instance to see if a sort was previously defined
         switch (sort) {
@@ -112,8 +106,6 @@ public class HomeActivity extends AppCompatActivity{
      *
      */
     private void showUI(){
-        Log.v("Show UI", "Favorite Movie Issue");
-
         mProgressBar = (ProgressBar) this.findViewById(R.id.loading_progress_bar);
         mMovieRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
         mMovieAdapter = new MovieViewAdapter();
@@ -138,8 +130,6 @@ public class HomeActivity extends AppCompatActivity{
      *
      */
     private void populateData(){
-        Log.v("Populate Data", "Favorite Movie Issue");
-
         mMovieAdapter.setData((ArrayList<Movie>) mData);
         mMovieAdapter.notifyDataSetChanged();
     }
@@ -149,8 +139,6 @@ public class HomeActivity extends AppCompatActivity{
      *
      */
     private void populateFavData(){
-        Log.v("Populate Fav Data", "Favorite Movie Issue");
-
         mMovieAdapter.setData((ArrayList<Movie>) mFavData);
         mMovieAdapter.notifyDataSetChanged();
     }
@@ -215,7 +203,6 @@ public class HomeActivity extends AppCompatActivity{
                 public List<Movie> loadInBackground() {
                     // Will implement to load data
 
-                    Log.v("loadInBackground", "Fav Loader");
                     // Query and load all task data in the background; sort by priority
                     // [Hint] use a try/catch block to catch any errors in loading data
 
@@ -255,7 +242,6 @@ public class HomeActivity extends AppCompatActivity{
                         cursor.close();
 
                     } catch (Exception e) {
-                        Log.e("HomeActivityException", "Failed to asynchronously load data.");
                         e.printStackTrace();
                         return null;
                     }
@@ -273,7 +259,6 @@ public class HomeActivity extends AppCompatActivity{
             mProgressBar.setVisibility(View.INVISIBLE);
             mMovieRecyclerView.setVisibility(View.VISIBLE);
 
-            Log.v("LoadFinished", "Favorite Movie Issue");
             mFavData = data;
             populateFavData();
         }

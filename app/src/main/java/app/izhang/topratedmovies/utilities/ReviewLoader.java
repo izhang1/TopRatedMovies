@@ -18,14 +18,13 @@ import java.util.List;
 
 public class ReviewLoader extends AsyncTaskLoader<List<String>>{
 
-    private Context mContext;
     private int mSort = 0;
     private String mMovieId = "";
 
     public ReviewLoader(Context context, int passedSort, String movieId) {
         super(context);
         mSort = passedSort;
-        mContext = context;
+        Context mContext = context;
         mMovieId = movieId;
     }
 
@@ -43,8 +42,7 @@ public class ReviewLoader extends AsyncTaskLoader<List<String>>{
         try{
             String jsonResponse = NetworkUtils.getResponseFromHttpUrl(queryUrl);
 
-            List<String> parsedReviewList = MovieJsonUtils.getReviewsFromJSON(jsonResponse);
-            return parsedReviewList;
+            return MovieJsonUtils.getReviewsFromJSON(jsonResponse);
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();

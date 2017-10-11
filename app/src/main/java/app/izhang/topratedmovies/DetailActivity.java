@@ -56,8 +56,7 @@ public class DetailActivity extends AppCompatActivity{
     private LoaderManager.LoaderCallbacks<List<Trailer>> trailerLoaderListener = new LoaderManager.LoaderCallbacks<List<Trailer>>() {
         @Override
         public Loader<List<Trailer>> onCreateLoader(int id, Bundle args) {
-            TrailerLoader trailerloader = new TrailerLoader(getApplicationContext(), NetworkUtils.TRAILERS, mMovieData.getId());
-            return trailerloader;
+            return new TrailerLoader(getApplicationContext(), NetworkUtils.TRAILERS, mMovieData.getId());
         }
 
         @Override
@@ -77,8 +76,7 @@ public class DetailActivity extends AppCompatActivity{
     private LoaderManager.LoaderCallbacks<List<String>> reviewLoaderListener = new LoaderManager.LoaderCallbacks<List<String>>() {
         @Override
         public Loader<List<String>> onCreateLoader(int id, Bundle args) {
-            ReviewLoader reviewLoader = new ReviewLoader(getApplicationContext(), NetworkUtils.REVIEWS, mMovieData.getId());
-            return reviewLoader;
+            return new ReviewLoader(getApplicationContext(), NetworkUtils.REVIEWS, mMovieData.getId());
         }
 
         @Override
@@ -177,7 +175,10 @@ public class DetailActivity extends AppCompatActivity{
         Cursor queriedMovie = mContentResolver.query(builder.build(), null, null, null, null, null);
 
         // Return false if the content resolve does not return anything
+        if(queriedMovie == null) return false;
         int count = queriedMovie.getCount();
+
+        queriedMovie.close();
 
         if(count <= 0){
             return false;
@@ -206,7 +207,6 @@ public class DetailActivity extends AppCompatActivity{
     /**
      *  OnClick - Deletes or Inserts the movie and changes the UI accordingly
      *
-     * @param view
      */
     public void onFavoriteButton(View view){
 

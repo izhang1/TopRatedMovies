@@ -21,13 +21,12 @@ import app.izhang.topratedmovies.data.Movie;
 
 public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
 
-    private Context mContext;
     private int mSort = 0;
 
     public MovieLoader(Context context, int passedSort) {
         super(context);
         mSort = passedSort;
-        mContext = context;
+        Context mContext = context;
     }
 
     @Override
@@ -44,8 +43,7 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
         try{
             String jsonResponse = NetworkUtils.getResponseFromHttpUrl(queryUrl);
 
-            List<Movie> parsedMovieList = MovieJsonUtils.getMovieListFromJson(jsonResponse);
-            return parsedMovieList;
+            return MovieJsonUtils.getMovieListFromJson(jsonResponse);
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();

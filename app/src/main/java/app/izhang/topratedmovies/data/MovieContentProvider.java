@@ -28,7 +28,7 @@ public class MovieContentProvider extends ContentProvider {
      Initialize a new matcher object without any matches,
      then use .addURI(String authority, String path, int match) to add matches
      */
-    public static UriMatcher buildUriMatcher() {
+    private static UriMatcher buildUriMatcher() {
 
         // Initialize a UriMatcher with no matches by passing in NO_MATCH to the constructor
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);

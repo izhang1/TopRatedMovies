@@ -239,7 +239,8 @@ public class HomeActivity extends AppCompatActivity{
                             }
 
                         }
-                        cursor.close();
+
+                        if(cursor != null) cursor.close();
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -282,8 +283,7 @@ public class HomeActivity extends AppCompatActivity{
            /* Checks to see if a value was passed in and passes that along to the loader method */
             int passedSort = 0;
             if(args != null) passedSort = args.getInt(getString(R.string.menu_key));
-            MovieLoader mMovieLoader = new MovieLoader(getApplicationContext(), passedSort);
-            return mMovieLoader;
+            return new MovieLoader(getApplicationContext(), passedSort);
         }
 
         @Override

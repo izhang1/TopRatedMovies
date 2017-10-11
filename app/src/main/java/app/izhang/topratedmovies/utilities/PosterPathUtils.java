@@ -1,7 +1,5 @@
 package app.izhang.topratedmovies.utilities;
 
-import android.net.Uri;
-
 /**
  * Created by ivanzhang on 9/9/17.
  * utilities

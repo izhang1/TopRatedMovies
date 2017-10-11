@@ -19,11 +19,10 @@ import java.util.ArrayList;
 public class ReviewViewAdapter extends RecyclerView.Adapter<ReviewViewAdapter.ReviewViewHolder>{
 
     private ArrayList<String> mReviewData;
-    private Context mContext;
 
     @Override
     public ReviewViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        mContext = viewGroup.getContext();
+        Context mContext = viewGroup.getContext();
         int layoutIdForListItem = R.layout.review_list_item;
         LayoutInflater inflater = LayoutInflater.from(mContext);
         boolean shouldAttachToParentImmediately = false;

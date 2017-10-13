@@ -12,13 +12,16 @@ import android.content.ContentValues;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -42,10 +45,15 @@ public class DetailActivity extends AppCompatActivity{
     private ArrayList<Trailer> mTrailerList;
     private RecyclerView mTrailerRecyclerView;
     private TrailerViewAdapter mTrailerViewAdapter;
+    private LinearLayoutManager mTrailerLayoutMgr;
 
     private ArrayList<String> mReviewList;
     private ReviewViewAdapter mReviewViewAdapter;
     private RecyclerView mReviewRecyclerView;
+    private LinearLayoutManager mReviewLayoutMgr;
+
+
+    private ScrollView mScrollView;
 
     private Button mFavoriteButton;
 
@@ -95,7 +103,6 @@ public class DetailActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
@@ -110,11 +117,23 @@ public class DetailActivity extends AppCompatActivity{
         // Allow the activity to go back to the home activity and show the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        showUI();
+        if(mScrollView == null) showUI();
 
         // Setup Loader to pull in data, both trailers and reviews
         getLoaderManager().initLoader(TRAILER_LOADER_ID, null, trailerLoaderListener);
         getLoaderManager().initLoader(REVIEW_LOADER_ID, null, reviewLoaderListener);
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
 
@@ -124,11 +143,15 @@ public class DetailActivity extends AppCompatActivity{
      */
     private void showUI(){
 
+        Log.v("ShowUI", "Show UI is called");
+
         mFavoriteButton = (Button) findViewById(R.id.btn_favorite);
         if(currentMovieIsFavorite() == true){
             // Set the text to unfavorite. Default is favorite
             mFavoriteButton.setText(getString(R.string.unfavorite_label));
         }
+
+        mScrollView = (ScrollView) findViewById(R.id.sv_detail);
 
         ImageView mPosterView = (ImageView) findViewById(R.id.poster_imageview);
         String posterPath = PosterPathUtils.buildPosterURL(mMovieData.getPosterPath(), "");
@@ -147,15 +170,15 @@ public class DetailActivity extends AppCompatActivity{
         mTrailerRecyclerView = (RecyclerView) findViewById(R.id.rv_trailers);
         mTrailerViewAdapter = new TrailerViewAdapter();
 
-        LinearLayoutManager trailerLayoutMgr = new LinearLayoutManager(this);
-        mTrailerRecyclerView.setLayoutManager(trailerLayoutMgr);
+        mTrailerLayoutMgr = new LinearLayoutManager(this);
+        mTrailerRecyclerView.setLayoutManager(mTrailerLayoutMgr);
         mTrailerRecyclerView.setAdapter(mTrailerViewAdapter);
 
-        LinearLayoutManager reviewLayoutMgr = new LinearLayoutManager(this);
+        mReviewLayoutMgr = new LinearLayoutManager(this);
         mReviewRecyclerView = (RecyclerView) findViewById(R.id.rv_reviews);
         mReviewViewAdapter = new ReviewViewAdapter();
 
-        mReviewRecyclerView.setLayoutManager(reviewLayoutMgr);
+        mReviewRecyclerView.setLayoutManager(mReviewLayoutMgr);
         mReviewRecyclerView.setAdapter(mReviewViewAdapter);
 
     }
@@ -166,6 +189,8 @@ public class DetailActivity extends AppCompatActivity{
      * @return
      */
     private boolean currentMovieIsFavorite(){
+        Log.v("CurrentMovieIsFavorite", "CALLED");
+
         mContentResolver = this.getContentResolver();
 
         Uri.Builder builder = MovieContract.MovieEntry.CONTENT_URI
@@ -192,6 +217,8 @@ public class DetailActivity extends AppCompatActivity{
      * Populates the movie data, called once the loader is finished or if the activity lifecycle resets
      */
     private void populateTrailerData(){
+        Log.v("populateTrailerData", "CALLED");
+
         mTrailerViewAdapter.setData(mTrailerList);
         mTrailerViewAdapter.notifyDataSetChanged();
     }
@@ -200,6 +227,8 @@ public class DetailActivity extends AppCompatActivity{
      * Populates the movie data, called once the loader is finished or if the activity lifecycle resets
      */
     private void populateReviewData(){
+        Log.v("populateReviewData", "CALLED");
+
         mReviewViewAdapter.setData(mReviewList);
         mTrailerViewAdapter.notifyDataSetChanged();
     }

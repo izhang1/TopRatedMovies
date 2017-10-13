@@ -46,7 +46,7 @@ public final class NetworkUtils {
 
     private static final String API_KEY_PARAM = "api_key";
     private static final String REVIEW_PATH = "reviews";
-    private static final String TRAILER_PATH = "trailers";
+    private static final String TRAILER_PATH = "videos";
     /*
      * NOTE: These values only effect responses from OpenWeatherMap, NOT from the fake weather
      * server. They are simply here to allow us to teach you how to build a URL if you were to use

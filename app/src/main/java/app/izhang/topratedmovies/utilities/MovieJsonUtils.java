@@ -1,5 +1,7 @@
 package app.izhang.topratedmovies.utilities;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,16 +76,18 @@ class MovieJsonUtils {
     public static List<Trailer> getTrailerFromJson(String trailerJsonStr) throws JSONException{
 
         /* ID to gather the youtube list */
-        final String TRAILER_YOUTUBE = "youtube";
+        final String TRAILER_RESULTS = "results";
 
         /* Attributes of the trailer that are needed to display and setup the YouTube intent */
         final String TRAILER_NAME = "name";
-        final String TRAILER_SOURCE = "source";
+        final String TRAILER_SOURCE = "key";
+
+        Log.v("Trailer JSON", trailerJsonStr);
 
         ArrayList<Trailer> trailerList = new ArrayList<>();
 
         JSONObject trailerJson = new JSONObject(trailerJsonStr);
-        JSONArray trailierArray = trailerJson.getJSONArray(TRAILER_YOUTUBE);
+        JSONArray trailierArray = trailerJson.getJSONArray(TRAILER_RESULTS);
 
         /* Looping through to parse the JSON data and saving that information into a new trailer object */
         for(int i = 0; i < trailierArray.length(); i++){

@@ -10,6 +10,7 @@ package app.izhang.topratedmovies;
 import android.content.AsyncTaskLoader;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -37,6 +38,7 @@ public class HomeActivity extends AppCompatActivity{
     private ProgressBar mProgressBar;
 
     private RecyclerView mMovieRecyclerView;
+    private GridLayoutManager mGridLayoutManager;
     private MovieViewAdapter mMovieAdapter;
     private List<Movie> mData;
     private List<Movie> mFavData;
@@ -50,6 +52,9 @@ public class HomeActivity extends AppCompatActivity{
 
     // Loader to load the internal DB results
     private final static int FAV_DB_LOADER_ID = 2001;
+
+    public final static String RV_STATE = "rv_state";
+    Parcelable rvState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +74,25 @@ public class HomeActivity extends AppCompatActivity{
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
+        rvState = mGridLayoutManager.onSaveInstanceState();
+        outState.putParcelable(RV_STATE, rvState);
         outState.putInt(SELECTED_SORT, mSavedSort);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState != null){
+            rvState = savedInstanceState.getParcelable(RV_STATE);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(rvState != null){
+            mGridLayoutManager.onRestoreInstanceState(rvState);
+        }
     }
 
     private void loadMovies(int sort){
@@ -79,23 +101,21 @@ public class HomeActivity extends AppCompatActivity{
         // Checks the saved instance to see if a sort was previously defined
         switch (sort) {
             case R.id.action_favorite:
-                getLoaderManager().restartLoader(FAV_DB_LOADER_ID, null, favoriteLoaderManager);
+                getLoaderManager().initLoader(FAV_DB_LOADER_ID, null, favoriteLoaderManager);
                 changeTitle(getString(R.string.favorite_label));
                 getLoaderManager().destroyLoader(HTTP_LOADER_ID);
 
                 break;
             case R.id.action_top_rated:
                 bundle.putInt(getString(R.string.menu_key), NetworkUtils.TOP_RATED);
-                getLoaderManager().restartLoader(HTTP_LOADER_ID, bundle, httpSortLoaderManager);
+                getLoaderManager().initLoader(HTTP_LOADER_ID, bundle, httpSortLoaderManager);
                 changeTitle(getString(R.string.top_rated_label));
-                getLoaderManager().destroyLoader(FAV_DB_LOADER_ID);
 
                 break;
             case R.id.action_most_popular:
                 bundle.putInt(getString(R.string.menu_key), NetworkUtils.MOST_POPULAR);
-                getLoaderManager().restartLoader(HTTP_LOADER_ID, bundle, httpSortLoaderManager);
+                getLoaderManager().initLoader(HTTP_LOADER_ID, bundle, httpSortLoaderManager);
                 changeTitle(getString(R.string.most_popular_label));
-                getLoaderManager().destroyLoader(FAV_DB_LOADER_ID);
 
                 break;
         }
@@ -110,10 +130,10 @@ public class HomeActivity extends AppCompatActivity{
         mMovieRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
         mMovieAdapter = new MovieViewAdapter();
 
-        GridLayoutManager gridLayoutManager
+        mGridLayoutManager
                 = new GridLayoutManager(this, layoutCountBasedOnOrientation());
 
-        mMovieRecyclerView.setLayoutManager(gridLayoutManager);
+        mMovieRecyclerView.setLayoutManager(mGridLayoutManager);
 
         mMovieRecyclerView.setAdapter(mMovieAdapter);
 

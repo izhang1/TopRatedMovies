@@ -86,13 +86,16 @@ public class MovieContentProvider extends ContentProvider {
                 String movieId = uri.getPathSegments().get(1);
 
                 // Query with the selection and selection args for this specific movie id
-                return db.query(MovieContract.MovieEntry.TABLE_NAME,
+                Cursor cursor = db.query(MovieContract.MovieEntry.TABLE_NAME,
                         projection,
                         "movie_id=?",
                         new String[]{movieId},
                         null,
                         null,
                         sortOrder);
+
+                cursor.setNotificationUri(getContext().getContentResolver(), uri);
+                return cursor;
 
         }
 

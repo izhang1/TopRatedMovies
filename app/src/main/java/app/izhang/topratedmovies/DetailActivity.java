@@ -143,8 +143,6 @@ public class DetailActivity extends AppCompatActivity{
      */
     private void showUI(){
 
-        Log.v("ShowUI", "Show UI is called");
-
         mFavoriteButton = (Button) findViewById(R.id.btn_favorite);
         if(currentMovieIsFavorite() == true){
             // Set the text to unfavorite. Default is favorite
@@ -189,7 +187,6 @@ public class DetailActivity extends AppCompatActivity{
      * @return
      */
     private boolean currentMovieIsFavorite(){
-        Log.v("CurrentMovieIsFavorite", "CALLED");
 
         mContentResolver = this.getContentResolver();
 
@@ -217,7 +214,6 @@ public class DetailActivity extends AppCompatActivity{
      * Populates the movie data, called once the loader is finished or if the activity lifecycle resets
      */
     private void populateTrailerData(){
-        Log.v("populateTrailerData", "CALLED");
 
         mTrailerViewAdapter.setData(mTrailerList);
         mTrailerViewAdapter.notifyDataSetChanged();
@@ -227,7 +223,6 @@ public class DetailActivity extends AppCompatActivity{
      * Populates the movie data, called once the loader is finished or if the activity lifecycle resets
      */
     private void populateReviewData(){
-        Log.v("populateReviewData", "CALLED");
 
         mReviewViewAdapter.setData(mReviewList);
         mTrailerViewAdapter.notifyDataSetChanged();

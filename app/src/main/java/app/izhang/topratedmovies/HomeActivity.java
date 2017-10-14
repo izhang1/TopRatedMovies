@@ -105,7 +105,7 @@ public class HomeActivity extends AppCompatActivity{
         // Checks the saved instance to see if a sort was previously defined
         switch (sort) {
             case R.id.action_favorite:
-                getLoaderManager().initLoader(FAV_DB_LOADER_ID, null, favoriteLoaderManager);
+                getLoaderManager().restartLoader(FAV_DB_LOADER_ID, null, favoriteLoaderManager);
                 changeTitle(getString(R.string.favorite_label));
                 getLoaderManager().destroyLoader(HTTP_MOST_POP_LOADER_ID);
                 getLoaderManager().destroyLoader(HTTP_TOP_RATED_LOADER_ID);
@@ -166,7 +166,7 @@ public class HomeActivity extends AppCompatActivity{
         mMovieAdapter.notifyDataSetChanged();
 
         // Restore the state of the scroll to the current location
-        //if(rvState != null) mGridLayoutManager.onRestoreInstanceState(rvState);
+        if(rvState != null) mGridLayoutManager.onRestoreInstanceState(rvState);
 
     }
 
@@ -313,7 +313,7 @@ public class HomeActivity extends AppCompatActivity{
 
         @Override
         public void onLoaderReset(Loader<List<Movie>> loader) {
-            getLoaderManager().restartLoader(FAV_DB_LOADER_ID, null, favoriteLoaderManager);
+            //getLoaderManager().restartLoader(FAV_DB_LOADER_ID, null, favoriteLoaderManager);
         }
     };
 
